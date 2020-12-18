@@ -1,0 +1,7 @@
+create:
+  path: /student
+  methods: POST|PUT
+  controller: App\Controller\Student\PostController
+  format: json
+  requirements:
+    _format: json
