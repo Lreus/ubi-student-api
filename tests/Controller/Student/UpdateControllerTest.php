@@ -8,15 +8,26 @@ use App\Controller\Student\PostController;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
+use App\Tests\ContainerMockGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdateControllerTest extends ClientAwareTestCase
 {
+    private ?ContainerMockGenerator $mockGenerator = null;
+
+    public function init()
+    {
+        if (!($this->mockGenerator instanceof ContainerMockGenerator)) {
+            $this->mockGenerator = new ContainerMockGenerator();
+        }
+    }
+
     public function testValidationExceptionReturnsBadRequest()
     {
-        $mock = $this->startStudentRepositoryMock();
+        $this->init();
+        $mock = $this->mockGenerator->injectMockIntoClient($this->client, StudentRepository::class);
 
         $mock->method('updateFromRequest')->willThrowException(new ValidationException());
 
@@ -28,20 +39,6 @@ class UpdateControllerTest extends ClientAwareTestCase
             PostController::BAD_REQUEST_MESSAGE,
             $response['message']
         );
-    }
-
-    /**
-     * Build a mock for StudentRepository class, inject it in the client container and returns created mock.
-     */
-    private function startStudentRepositoryMock(): MockObject
-    {
-        $mock = $this->getMockBuilder(StudentRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->client->getContainer()->set(StudentRepository::class, $mock);
-
-        return $mock;
     }
 
     /**
