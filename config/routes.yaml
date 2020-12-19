@@ -1,3 +1,6 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+students:
+    resource: ./routes/students.yml
+    prefix: /api
+    name_prefix: students_
+    requirements:
+        _format: json
