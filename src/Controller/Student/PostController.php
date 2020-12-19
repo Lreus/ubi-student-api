@@ -9,7 +9,7 @@ use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,11 +29,10 @@ class PostController extends JsonApiController
 
     public function __invoke(Request $request): JsonResponse
     {
-        $parameters = json_decode($request->getContent(), true);
-
         try {
-            $student = $this->repository->createFromRequest($parameters);
-        }  catch (ValidationException $exception) {
+            $content = $this->getJsonContent($request);
+            $student = $this->repository->createFromRequest($content);
+        }  catch (JsonException | ValidationException $exception) {
             return $this->json(['message' => self::BAD_REQUEST_MESSAGE, Response::HTTP_BAD_REQUEST]);
         }
 

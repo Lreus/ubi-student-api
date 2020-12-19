@@ -8,7 +8,7 @@ use App\Controller\JsonApiController;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use Doctrine\ORM\EntityNotFoundException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,11 +23,10 @@ class UpdateController extends JsonApiController
 
     public function __invoke(Request $request, string $studentId)
     {
-        $parameters = json_decode($request->getContent(), true);
-
         try {
-            $student = $this->repository->updateFromRequest($parameters, $studentId);
-        } catch (ValidationException $exception) {
+            $content = $this->getJsonContent($request);
+            $student = $this->repository->updateFromRequest($content, $studentId);
+        } catch (JsonException | ValidationException $exception) {
             return $this->json(['message' => PostController::BAD_REQUEST_MESSAGE], Response::HTTP_BAD_REQUEST);
         } catch (EntityNotFoundException $exception) {
             return $this->getJsonStandardResponse(Response::HTTP_NOT_FOUND);
