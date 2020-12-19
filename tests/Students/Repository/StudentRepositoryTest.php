@@ -17,14 +17,20 @@ class StudentRepositoryTest extends KernelTestCase
     protected function setUp(): void
     {
         self::bootKernel();
-        $subject = self::$container->get(StudentRepository::class);
-        $this->assertInstanceOf(StudentRepository::class, $subject);
-        $this->subject = $subject;
+        $this->subject = $this->getStudentRepository();
+    }
+
+    private function getStudentRepository(): StudentRepository
+    {
+        $repository = self::$container->get(StudentRepository::class);
+        $this->assertInstanceOf(StudentRepository::class, $repository);
+
+        /** @var StudentRepository $repository */
+        return $repository;
     }
 
     public function testBuildFromRequest()
     {
-
         $studentValues = [
             'first_name' => 'Ludovic',
             'last_name' => 'REUS',
