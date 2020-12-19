@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateStudentTest extends WebTestCase
+class PostControllerTest extends WebTestCase
 {
     /**
      * @var KernelBrowser
