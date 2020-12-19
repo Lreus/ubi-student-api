@@ -7,18 +7,38 @@ namespace App\Repository;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 use DateTimeImmutable;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class StudentRepository
+class StudentRepository extends ServiceEntityRepository
 {
     private ValidatorInterface $validator;
 
-    public function __construct(ValidatorInterface $validator)
+    public function __construct(ManagerRegistry $registry, ValidatorInterface $validator)
     {
         $this->validator = $validator;
+
+        parent::__construct($registry, Student::class);
+    }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(Student ...$students)
+    {
+        $em = $this->getEntityManager();
+        foreach ($students as $student) {
+            $em->persist($student);
+        }
+
+        $em->flush();
     }
 
     /**

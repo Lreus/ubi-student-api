@@ -2,5 +2,6 @@ services:
   # MAke service public to allow mock replacement
   App\Repository\StudentRepository:
     arguments:
+      - '@doctrine'
       - '@validator'
     public: true
