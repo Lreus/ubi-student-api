@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 class ContainerMockGenerator extends TestCase
 {
     /**
-     * Build a mock for StudentRepository class, inject it in the client container and returns created mock.
+     * Build a mock for provided class, inject it in the client container and returns created mock.
      */
     public function injectMockIntoClient(KernelBrowser $client, string $mockedClass): MockObject
     {
