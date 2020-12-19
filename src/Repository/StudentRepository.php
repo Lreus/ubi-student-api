@@ -8,6 +8,7 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -60,12 +61,19 @@ class StudentRepository extends ServiceEntityRepository
 
     /**
      * @throws ValidationException
+     * @throws EntityNotFoundException
      */
-    public function updateFromRequest(array $content)
+    public function updateFromRequest(array $content, string $userId)
     {
         $content = $this->sanitizeContent($content);
 
         $this->validateContent($content);
+
+        $student = $this->find($userId);
+        if (!($student instanceof Student)) {
+            $message = sprintf('Unknown student identified by "%s"', $userId);
+            throw new EntityNotFoundException($message);
+        }
     }
 
     /**

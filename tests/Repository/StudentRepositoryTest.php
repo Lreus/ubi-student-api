@@ -7,7 +7,9 @@ namespace App\Tests\Repository;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ObjectManager;
 use Iterator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -107,7 +109,7 @@ class StudentRepositoryTest extends KernelTestCase
     {
         $this->expectException(ValidationException::class);
 
-        $this->subject->updateFromRequest($studentValues);
+        $this->subject->updateFromRequest($studentValues, 'anyId');
     }
 
     public function invalidStudentProvider(): Iterator
@@ -166,5 +168,20 @@ class StudentRepositoryTest extends KernelTestCase
         ];
     }
 
+    public function testUnknownUserThrowEntityNotFoundException()
+    {
+        $userId = 'the_existing_user';
+        $this->clearStudentFromDatabase($userId);
+
+        $updatedContent = [
+            'first_name' => 'Thierry',
+            'last_name' => 'Lebon',
+            'birth_date' => '06/02/1983',
+        ];
+
+        $this->expectException(EntityNotFoundException::class);
+
+        $this->subject->updateFromRequest($updatedContent, $userId);
+    }
 
 }
