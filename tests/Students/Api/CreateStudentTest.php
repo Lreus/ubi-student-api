@@ -39,7 +39,7 @@ class CreateStudentTest extends WebTestCase
 
         $mock->method('createFromRequest')->willReturn($expectedStudent);
 
-        $client = $this->postStudent($this->getValidStudentValues());
+        $client = $this->postStudent();
 
         $response = $client->getResponse();
         $this->assertStringContainsString('application/json', $response->headers->get('Content-type'));
@@ -55,7 +55,7 @@ class CreateStudentTest extends WebTestCase
 
         $mock->method('createFromRequest')->willThrowException(new ValidationException());
 
-        $this->client = $this->postStudent($this->getValidStudentValues());
+        $this->client = $this->postStudent();
 
         $response = $this->decodeResponse($this->client);
         $this->assertSame(
@@ -75,15 +75,6 @@ class CreateStudentTest extends WebTestCase
         return $mock;
     }
 
-    private function getValidStudentValues(): array
-    {
-        return [
-            'first_name' => 'Ludovic',
-            'last_name' => 'REUS',
-            'birth_date' => '07/01/1982',
-        ];
-    }
-
     private function decodeResponse(KernelBrowser $client): array
     {
         $response = json_decode($client->getResponse()->getContent(), true);
@@ -92,7 +83,7 @@ class CreateStudentTest extends WebTestCase
         return $response;
     }
 
-    private function postStudent(array $postParameters): KernelBrowser
+    private function postStudent(array $postParameters = []): KernelBrowser
     {
         $this->client->request(
             'PUT',
