@@ -93,7 +93,7 @@ class StudentRepositoryTest extends KernelTestCase
     /**
      * @dataProvider invalidStudentProvider
      */
-    public function testInvalidDataThrowsValidationException(array $studentValues)
+    public function testInvalidDataThrowsValidationExceptionOnCreation(array $studentValues)
     {
         $this->expectException(ValidationException::class);
 
