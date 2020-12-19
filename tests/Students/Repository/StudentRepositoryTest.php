@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Students\Adapter;
+namespace App\Tests\Students\Repository;
 
 use App\Entity\Student;
 use App\Exception\ValidationException;
