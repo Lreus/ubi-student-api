@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Student;
 
+use App\Controller\JsonApiController;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use Doctrine\ORM\EntityNotFoundException;
@@ -11,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateController extends AbstractController
+class UpdateController extends JsonApiController
 {
     private StudentRepository $repository;
 
@@ -29,10 +30,7 @@ class UpdateController extends AbstractController
         } catch (ValidationException $exception) {
             return $this->json(['message' => PostController::BAD_REQUEST_MESSAGE], Response::HTTP_BAD_REQUEST);
         } catch (EntityNotFoundException $exception) {
-            return $this->json(
-                ['message' => Response::$statusTexts[Response::HTTP_NOT_FOUND]],
-                Response::HTTP_NOT_FOUND
-            );
+            return $this->getJsonStandardResponse(Response::HTTP_NOT_FOUND);
         }
     }
 }

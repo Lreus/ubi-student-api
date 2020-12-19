@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Student;
 
+use App\Controller\JsonApiController;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostController extends AbstractController
+class PostController extends JsonApiController
 {
     const BAD_REQUEST_MESSAGE = 'Required fields: "last_name" :string, "first_name": string, "birth_date": date(DD-MM-YYYY)';
     /**
@@ -39,10 +40,7 @@ class PostController extends AbstractController
         try {
             $this->repository->save($student);
         } catch (OptimisticLockException | ORMException $exception) {
-            return $this->json(
-                ['message' => Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR]],
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
+            return $this->getJsonStandardResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json(['id' => $student->getId()], Response::HTTP_CREATED);
