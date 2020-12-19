@@ -9,8 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class ClientAwareTestCase extends WebTestCase
 {
-    /** @var KernelBrowser $client */
-    protected $client;
+    protected KernelBrowser $client;
 
     protected function setUp(): void
     {
