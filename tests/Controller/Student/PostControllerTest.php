@@ -8,28 +8,18 @@ use App\Controller\Student\PostController;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
+use App\Tests\ClientAwareTestCase;
 use DateTimeImmutable;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use Iterator;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostControllerTest extends WebTestCase
+class PostControllerTest extends ClientAwareTestCase
 {
-    /**
-     * @var KernelBrowser
-     */
-    private $client;
-
-    protected function setUp(): void
-    {
-        $this->client = self::createClient();
-    }
-
     /**
      * Given I request a post Student
      * And StudentRepository creates a Student from request

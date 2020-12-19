@@ -7,23 +7,13 @@ namespace App\Tests\Controller\Student;
 use App\Controller\Student\PostController;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
+use App\Tests\ClientAwareTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateControllerTest extends WebTestCase
+class UpdateControllerTest extends ClientAwareTestCase
 {
-    /**
-     * @var KernelBrowser
-     */
-    private $client;
-
-    protected function setUp(): void
-    {
-        $this->client = self::createClient();
-    }
-
     public function testValidationExceptionReturnsBadRequest()
     {
         $mock = $this->startStudentRepositoryMock();
