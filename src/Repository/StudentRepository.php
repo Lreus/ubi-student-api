@@ -46,13 +46,36 @@ class StudentRepository extends ServiceEntityRepository
      */
     public function createFromRequest(array $content): Student
     {
-        $content = array_map(
+        $content = $this->sanitizeContent($content);
+
+        $this->validateContent($content);
+
+        return new Student(
+            Uuid::uuid4()->toString(),
+            $content['last_name'],
+            $content['first_name'],
+            DateTimeImmutable::createFromFormat('d/m/Y', $content['birth_date'])
+        );
+    }
+
+    /**
+     * @param String[] $content
+     */
+    private function sanitizeContent(array $content): array
+    {
+        return array_map(
             function ($value) {
                 return trim($value);
             },
             $content
         );
+    }
 
+    /**
+     * @throws ValidationException
+     */
+    private function validateContent(array $content): bool
+    {
         $violations = $this->validator->validate(
             $content,
             $this->getInputConstraint()
@@ -62,12 +85,7 @@ class StudentRepository extends ServiceEntityRepository
             throw new ValidationException($violations);
         }
 
-        return new Student(
-            Uuid::uuid4()->toString(),
-            $content['last_name'],
-            $content['first_name'],
-            DateTimeImmutable::createFromFormat('d/m/Y', $content['birth_date'])
-        );
+        return true;
     }
 
     private function getInputConstraint(): Constraint
