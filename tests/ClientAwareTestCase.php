@@ -17,6 +17,17 @@ abstract class ClientAwareTestCase extends WebTestCase
         $this->client = self::createClient();
     }
 
+    /**
+     * Assert response was valid json and returns decoded result.
+     */
+    protected function decodeResponse(): array
+    {
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertIsArray($response);
+
+        return $response;
+    }
+
     protected function tearDown(): void
     {
         self::ensureKernelShutdown();

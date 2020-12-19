@@ -55,7 +55,7 @@ class PostControllerTest extends ClientAwareTestCase
         $this->assertStringContainsString('application/json', $response->headers->get('Content-type'));
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
-        $decodedResponse = $this->decodeResponse($client);
+        $decodedResponse = $this->decodeResponse();
         $this->assertSame($expectedStudent->getId(), $decodedResponse['id']);
     }
 
@@ -79,7 +79,7 @@ class PostControllerTest extends ClientAwareTestCase
 
         $this->client = $this->postStudent();
 
-        $response = $this->decodeResponse($this->client);
+        $response = $this->decodeResponse();
         $this->assertSame(
             PostController::BAD_REQUEST_MESSAGE,
             $response['message']
@@ -107,7 +107,7 @@ class PostControllerTest extends ClientAwareTestCase
         $mock->method('save')->willThrowException($exception);
 
         $this->client = $this->postStudent();
-        $response = $this->decodeResponse($this->client);
+        $response = $this->decodeResponse();
 
         $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
         $this->assertSame(
@@ -137,17 +137,6 @@ class PostControllerTest extends ClientAwareTestCase
         $mockObject->method('createFromRequest')->willReturn($expectedStudent);
 
         return $expectedStudent;
-    }
-
-    /**
-     * Assert response was valid json and returns decoded result.
-     */
-    private function decodeResponse(KernelBrowser $client): array
-    {
-        $response = json_decode($client->getResponse()->getContent(), true);
-        $this->assertIsArray($response);
-
-        return $response;
     }
 
     /**
