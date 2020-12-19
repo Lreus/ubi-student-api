@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Students\Controller;
+namespace App\Tests\Controller\Student;
 
 use App\Controller\Student\PostController;
 use App\Entity\Student;
