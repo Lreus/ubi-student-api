@@ -60,4 +60,19 @@ class Student
     {
         return $this->birthDate;
     }
+
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function setFirstName(string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function setBirthDate(DateTimeImmutable $birthDate): void
+    {
+        $this->birthDate = $birthDate;
+    }
 }
