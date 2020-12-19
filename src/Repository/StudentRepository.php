@@ -59,6 +59,16 @@ class StudentRepository extends ServiceEntityRepository
     }
 
     /**
+     * @throws ValidationException
+     */
+    public function updateFromRequest(array $content)
+    {
+        $content = $this->sanitizeContent($content);
+
+        $this->validateContent($content);
+    }
+
+    /**
      * @param String[] $content
      */
     private function sanitizeContent(array $content): array

@@ -100,6 +100,16 @@ class StudentRepositoryTest extends KernelTestCase
         $this->subject->createFromRequest($studentValues);
     }
 
+    /**
+     * @dataProvider invalidStudentProvider
+     */
+    public function testInvalidDataThrowsValidationExceptionOnUpdate(array $studentValues)
+    {
+        $this->expectException(ValidationException::class);
+
+        $this->subject->updateFromRequest($studentValues);
+    }
+
     public function invalidStudentProvider(): Iterator
     {
         // empty array
