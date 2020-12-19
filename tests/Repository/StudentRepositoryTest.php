@@ -70,7 +70,7 @@ class StudentRepositoryTest extends KernelTestCase
      */
     public function testSavingEntity(Student $student)
     {
-        $this->clearStudentFromDatabase($student);
+        $this->clearStudentFromDatabase($student->getId());
 
         $this->subject->save($student);
 
@@ -78,16 +78,16 @@ class StudentRepositoryTest extends KernelTestCase
         $this->assertInstanceOf(Student::class, $result);
     }
 
-    private function clearStudentFromDatabase(Student $student): void
+    private function clearStudentFromDatabase(string $studentId): void
     {
-        $existing = $this->studentEntityManager->find(Student::class, $student->getId());
+        $existing = $this->studentEntityManager->find(Student::class, $studentId);
         if (null === $existing) {
             return;
         }
 
         $this->studentEntityManager->remove($existing);
         $this->studentEntityManager->flush();
-        $this->assertNull($this->studentEntityManager->find(Student::class, $student->getId()));
+        $this->assertNull($this->studentEntityManager->find(Student::class, $studentId));
     }
 
     /**
@@ -165,4 +165,6 @@ class StudentRepositoryTest extends KernelTestCase
             ]
         ];
     }
+
+
 }
