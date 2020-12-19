@@ -9,6 +9,7 @@ use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
 use App\Tests\ContainerMockGenerator;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,6 +37,23 @@ class UpdateControllerTest extends ClientAwareTestCase
         $response = $this->decodeResponse();
         $this->assertSame(
             PostController::BAD_REQUEST_MESSAGE,
+            $response['message']
+        );
+    }
+
+    public function testEntityNotFoundExceptionReturns404()
+    {
+        $this->init();
+        $mock = $this->mockGenerator->injectMockIntoClient($this->client, StudentRepository::class);
+
+        $mock->method('updateFromRequest')->willThrowException(new EntityNotFoundException());
+
+        $client = $this->updateStudent('unknown_user');
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
+        $response = $this->decodeResponse();
+        $this->assertSame(
+            'Not Found',
             $response['message']
         );
     }
