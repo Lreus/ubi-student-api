@@ -34,7 +34,7 @@ class PostControllerTest extends ClientAwareTestCase
      * Given I request a post Student
      * And StudentRepository creates a Student from request
      *
-     * Then Studentrepository::save is called
+     * Then StudentRepository::save is called
      * And Controller returns a Json Response
      * And response status code is 201 created
      * And response content is an array
@@ -111,7 +111,7 @@ class PostControllerTest extends ClientAwareTestCase
 
         $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
         $this->assertSame(
-            'Internal server error',
+            'Internal Server Error',
             $response['message']
         );
     }

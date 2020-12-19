@@ -39,7 +39,10 @@ class PostController extends AbstractController
         try {
             $this->repository->save($student);
         } catch (OptimisticLockException | ORMException $exception) {
-            return $this->json(['message' => 'Internal server error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->json(
+                ['message' => Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR]],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
 
         return $this->json(['id' => $student->getId()], Response::HTTP_CREATED);
