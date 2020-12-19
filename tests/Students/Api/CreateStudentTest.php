@@ -9,7 +9,11 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use DateTimeImmutable;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use Iterator;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,6 +67,39 @@ class CreateStudentTest extends WebTestCase
             PostController::BAD_REQUEST_MESSAGE,
             $response['message']
         );
+    }
+
+    /**
+     * @dataProvider ormExceptionProvider
+     */
+    public function testOrmExceptionReturnsSanitizedMessage(Exception $exception)
+    {
+        $mock = $this->startStudentRepositoryMock();
+
+        $expectedStudent = new Student(
+            'anyId',
+            'Doe',
+            'John',
+            new DateTimeImmutable()
+        );
+
+        $mock->method('createFromRequest')->willReturn($expectedStudent);
+        $mock->method('save')->willThrowException($exception);
+
+        $this->client = $this->postStudent();
+        $response = $this->decodeResponse($this->client);
+
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(
+            'Internal server error',
+            $response['message']
+        );
+    }
+
+    public function ormExceptionProvider(): Iterator
+    {
+        yield [new ORMException()];
+        yield [new OptimisticLockException('optimistic exception', null)];
     }
 
     private function startStudentRepositoryMock(): MockObject

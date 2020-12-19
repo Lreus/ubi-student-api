@@ -6,6 +6,8 @@ namespace App\Controller\Student;
 
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +36,11 @@ class PostController extends AbstractController
             return $this->json(['message' => self::BAD_REQUEST_MESSAGE, Response::HTTP_BAD_REQUEST]);
         }
 
-        $this->repository->save($student);
+        try {
+            $this->repository->save($student);
+        } catch (OptimisticLockException | ORMException $exception) {
+            return $this->json(['message' => 'Internal server error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return $this->json(['id' => $student->getId()], Response::HTTP_CREATED);
     }
