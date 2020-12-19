@@ -184,4 +184,38 @@ class StudentRepositoryTest extends KernelTestCase
         $this->subject->updateFromRequest($updatedContent, $userId);
     }
 
+    public function testUpdateFromRequest()
+    {
+        $userId = 'the_existing_user';
+        $userLastName = 'Doe';
+        $userFirstName = 'John';
+        $userBirthDate = DateTimeImmutable::createFromFormat('d/m/Y', '02/12/1982');
+
+        $this->clearStudentFromDatabase($userId);
+
+        $this->studentEntityManager->persist(
+            new Student(
+                $userId,
+                $userLastName,
+                $userFirstName,
+                $userBirthDate
+            )
+        );
+
+        $this->studentEntityManager->flush();
+
+        $updatedContent = [
+            'first_name' => 'Thierry',
+            'last_name' => 'Lebon',
+            'birth_date' => '06/02/1983',
+        ];
+
+        $result = $this->subject->updateFromRequest($updatedContent, $userId);
+
+        $this->assertInstanceOf(Student::class, $result);
+        $this->assertSame($result->getLastName(), $updatedContent['last_name']);
+        $this->assertSame($result->getFirstName(), $updatedContent['first_name']);
+        $this->assertSame($result->getBirthDate()->format('d/m/Y'), $updatedContent['birth_date']);
+
+    }
 }

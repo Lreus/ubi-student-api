@@ -74,6 +74,14 @@ class StudentRepository extends ServiceEntityRepository
             $message = sprintf('Unknown student identified by "%s"', $userId);
             throw new EntityNotFoundException($message);
         }
+
+        $student->setLastName($content['last_name']);
+        $student->setFirstName($content['first_name']);
+        $student->setBirthDate(
+            DateTimeImmutable::createFromFormat('d/m/Y', $content['birth_date'])
+        );
+
+        return $student;
     }
 
     /**
