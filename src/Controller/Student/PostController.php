@@ -34,6 +34,8 @@ class PostController extends AbstractController
             return $this->json(['message' => self::BAD_REQUEST_MESSAGE, Response::HTTP_BAD_REQUEST]);
         }
 
+        $this->repository->save($student);
+
         return $this->json(['id' => $student->getId()], Response::HTTP_CREATED);
     }
 }

@@ -38,6 +38,7 @@ class CreateStudentTest extends WebTestCase
         );
 
         $mock->method('createFromRequest')->willReturn($expectedStudent);
+        $mock->expects($this->once())->method('save')->with($expectedStudent);
 
         $client = $this->postStudent();
 
