@@ -58,6 +58,17 @@ class CreateStudentTest extends WebTestCase
         $this->assertSame($expectedStudent->getId(), $decodedResponse['id']);
     }
 
+    /**
+     * Given I request a post Student
+     * And StudentRepository does not validate request content
+     * Then Controller returns a Json Response
+     * And response status code is 400 Bad request
+     * And response content is an array
+     * And response[message] is equal to:
+     * """
+     * Required fields: "last_name" :string, "first_name": string, "birth_date": date(DD-MM-YYYY)
+     * """
+     */
     public function testValidationExceptionReturnsBadRequest()
     {
         $mock = $this->startStudentRepositoryMock();
@@ -125,6 +136,9 @@ class CreateStudentTest extends WebTestCase
         return $expectedStudent;
     }
 
+    /**
+     * Build a mock for StudentRepository class, inject it in the client container and returns created mock.
+     */
     private function startStudentRepositoryMock(): MockObject
     {
         $mock = $this->getMockBuilder(StudentRepository::class)
@@ -136,6 +150,9 @@ class CreateStudentTest extends WebTestCase
         return $mock;
     }
 
+    /**
+     * Assert response was valid json and returns decoded result.
+     */
     private function decodeResponse(KernelBrowser $client): array
     {
         $response = json_decode($client->getResponse()->getContent(), true);
@@ -144,6 +161,9 @@ class CreateStudentTest extends WebTestCase
         return $response;
     }
 
+    /**
+     * Perform request in instance's client and returns client.
+     */
     private function postStudent(array $postParameters = []): KernelBrowser
     {
         $this->client->request(
