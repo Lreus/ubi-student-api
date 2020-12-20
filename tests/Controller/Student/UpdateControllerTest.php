@@ -56,7 +56,8 @@ class UpdateControllerTest extends ClientAwareTestCase
     {
         $mock = $this->injectMockIntoClient(StudentRepository::class);
 
-        $this->expectsThisMockWillReturnStudent($mock);
+        $expectedStudent = $this->expectsThisMockWillReturnStudent($mock);
+        $mock->expects($this->once())->method('save')->with($expectedStudent);
 
         $client = $this->updateStudent('the_updated_user');
 
