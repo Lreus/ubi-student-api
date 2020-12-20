@@ -20,6 +20,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UpdateControllerTest extends ClientAwareTestCase
 {
+    /**
+     * Given I post any Student update
+     * And StudentRepository does not validate request content
+     *
+     * Then Controller returns a Json Response
+     * And response status code is 400 (Bad Request)
+     * And response content is an array
+     * And response[message] is equal to bad request message on student creation
+     */
     public function testValidationExceptionReturnsBadRequest()
     {
         $mock = $this->injectMockIntoClient(StudentRepository::class);
@@ -36,6 +45,15 @@ class UpdateControllerTest extends ClientAwareTestCase
         );
     }
 
+    /**
+     * Given I post any Student update
+     * And StudentRepository does not found the student
+     *
+     * Then Controller returns a Json Response
+     * And response status code is 404 (Not Found)
+     * And response content is an array
+     * And response[message] is equal "Not Found"
+     */
     public function testEntityNotFoundExceptionReturns404()
     {
         $mock = $this->injectMockIntoClient(StudentRepository::class);
@@ -52,6 +70,14 @@ class UpdateControllerTest extends ClientAwareTestCase
         );
     }
 
+    /**
+     * Given I post any Student update
+     * And StudentRepository returns an updated Student
+     *
+     * Then the student is saved in database
+     * And Controller returns a Json Response
+     * And response status code is 204 (Not Content)
+     */
     public function testUpdateFromContentReturns204OnValidRequest()
     {
         $mock = $this->injectMockIntoClient(StudentRepository::class);
@@ -66,6 +92,14 @@ class UpdateControllerTest extends ClientAwareTestCase
 
     /**
      * @dataProvider ormExceptionProvider
+     *
+     * Given I post any Student update
+     * And StudentRepository throws an OrmException on save
+     *
+     * Then Controller returns a Json Response
+     * And response status code is 500 (Internal Server Error)
+     * And response content is an array
+     * And response[message] is equal "Internal Server Error"
      */
     public function testOrmExceptionReturnsSanitizedMessage(ORMException $exception)
     {
