@@ -29,3 +29,8 @@ First part release: Student basic management
 - Add
 - Edit
 - Delete
+
+
+1.0.1
+--
+- Fix student validation to handle non string in names
