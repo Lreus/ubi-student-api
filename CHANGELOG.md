@@ -22,3 +22,10 @@ Ubitransport test: student api
 -
 
 - Add Api endpoint to delete a student
+
+1.0.0
+-
+First part release: Student basic management
+- Add
+- Edit
+- Delete
