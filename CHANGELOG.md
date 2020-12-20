@@ -5,3 +5,10 @@ Ubitransport test: student api
 -
 
 - Add Api endpoint to post one student 
+
+0.1.0
+-
+
+- Add Api endpoint to update one student
+- Fix a bug in tests where mock did not check expectations
+- Fix Directory architecture to mirror tests and src

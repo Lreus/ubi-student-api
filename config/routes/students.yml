@@ -1,3 +1,10 @@
+update:
+  path: /student/{studentId}.{_format}
+  methods: POST|PUT
+  controller: App\Controller\Student\UpdateController
+  format: json
+
+
 create:
   path: /student.{_format}
   methods: POST|PUT

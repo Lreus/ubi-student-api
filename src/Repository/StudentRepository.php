@@ -8,6 +8,7 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -46,13 +47,61 @@ class StudentRepository extends ServiceEntityRepository
      */
     public function createFromRequest(array $content): Student
     {
-        $content = array_map(
+        $content = $this->sanitizeContent($content);
+
+        $this->validateContent($content);
+
+        return new Student(
+            Uuid::uuid4()->toString(),
+            $content['last_name'],
+            $content['first_name'],
+            DateTimeImmutable::createFromFormat('d/m/Y', $content['birth_date'])
+        );
+    }
+
+    /**
+     * @throws ValidationException
+     * @throws EntityNotFoundException
+     */
+    public function updateFromRequest(array $content, string $userId)
+    {
+        $content = $this->sanitizeContent($content);
+
+        $this->validateContent($content);
+
+        $student = $this->find($userId);
+        if (!($student instanceof Student)) {
+            $message = sprintf('Unknown student identified by "%s"', $userId);
+            throw new EntityNotFoundException($message);
+        }
+
+        $student->setLastName($content['last_name']);
+        $student->setFirstName($content['first_name']);
+        $student->setBirthDate(
+            DateTimeImmutable::createFromFormat('d/m/Y', $content['birth_date'])
+        );
+
+        return $student;
+    }
+
+    /**
+     * @param String[] $content
+     */
+    private function sanitizeContent(array $content): array
+    {
+        return array_map(
             function ($value) {
                 return trim($value);
             },
             $content
         );
+    }
 
+    /**
+     * @throws ValidationException
+     */
+    private function validateContent(array $content): bool
+    {
         $violations = $this->validator->validate(
             $content,
             $this->getInputConstraint()
@@ -62,12 +111,7 @@ class StudentRepository extends ServiceEntityRepository
             throw new ValidationException($violations);
         }
 
-        return new Student(
-            Uuid::uuid4()->toString(),
-            $content['last_name'],
-            $content['first_name'],
-            DateTimeImmutable::createFromFormat('d/m/Y', $content['birth_date'])
-        );
+        return true;
     }
 
     private function getInputConstraint(): Constraint
