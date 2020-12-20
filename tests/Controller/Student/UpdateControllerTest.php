@@ -11,6 +11,10 @@ use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Iterator;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -46,6 +50,44 @@ class UpdateControllerTest extends ClientAwareTestCase
             'Not Found',
             $response['message']
         );
+    }
+
+    public function testUpdateFromContentReturns204OnValidRequest()
+    {
+        $mock = $this->injectMockIntoClient(StudentRepository::class);
+
+        $expectedStudent = $this->expectsThisMockWillReturnStudent($mock);
+
+        $client = $this->updateStudent('the_updated_user');
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @dataProvider ormExceptionProvider
+     */
+    public function testOrmExceptionReturnsSanitizedMessage(ORMException $exception)
+    {
+        $mock = $this->injectMockIntoClient(StudentRepository::class);
+
+        $this->expectsThisMockWillReturnStudent($mock);
+
+        $mock->method('save')->willThrowException($exception);
+
+        $this->client = $this->updateStudent('any_user_id');
+        $response = $this->decodeResponse();
+
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(
+            'Internal Server Error',
+            $response['message']
+        );
+    }
+
+    public function ormExceptionProvider(): Iterator
+    {
+        yield [new ORMException()];
+        yield [new OptimisticLockException('optimistic exception', null)];
     }
 
     /**
