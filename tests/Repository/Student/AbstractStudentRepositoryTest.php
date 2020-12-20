@@ -112,6 +112,23 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
                 'birth_date' => '07-01-1982',
             ]
         ];
+
+        // Invalid types
+        yield [
+            [
+                'first_name' => 1,
+                'last_name' => 10,
+                'birth_date' => '07-01-1982',
+            ]
+        ];
+
+        yield [
+            [
+                'first_name' => 'Ludovic',
+                'last_name' => 'REUS',
+                'birth_date' => '07-01-1982',
+            ]
+        ];
     }
 
     protected function tearDown(): void

@@ -47,8 +47,6 @@ class StudentRepository extends ServiceEntityRepository
      */
     public function createFromRequest(array $content): Student
     {
-        $content = $this->sanitizeContent($content);
-
         $this->validateContent($content);
 
         return new Student(
@@ -65,8 +63,6 @@ class StudentRepository extends ServiceEntityRepository
      */
     public function updateFromRequest(array $content, string $userId)
     {
-        $content = $this->sanitizeContent($content);
-
         $this->validateContent($content);
 
         $student = $this->find($userId);
@@ -104,19 +100,6 @@ class StudentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param String[] $content
-     */
-    private function sanitizeContent(array $content): array
-    {
-        return array_map(
-            function ($value) {
-                return trim($value);
-            },
-            $content
-        );
-    }
-
-    /**
      * @throws ValidationException
      */
     private function validateContent(array $content): bool
@@ -137,16 +120,24 @@ class StudentRepository extends ServiceEntityRepository
     {
         return new Assert\Collection([
             'fields' => [
-                'last_name' => new Assert\Required([
-                    new Assert\NotBlank()
-                ]),
-                'first_name' => new Assert\Required([
-                    new Assert\NotBlank()
-                ]),
-                'birth_date' => new Assert\Required([
-                    new Assert\DateTime([
-                        'format' => 'd/m/Y'
+                'last_name' => [
+                    new Assert\Type([
+                        'type' => 'string',
+                    ]),
+                    new Assert\NotBlank([
+                        'normalizer' => 'trim'
                     ])
+                ],
+                'first_name' => [
+                    new Assert\Type([
+                        'type' => 'string',
+                    ]),
+                    new Assert\NotBlank([
+                        'normalizer' => 'trim'
+                    ])
+                ],
+                'birth_date' => new Assert\DateTime([
+                    'format' => 'd/m/Y'
                 ]),
             ]
         ]);
