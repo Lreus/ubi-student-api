@@ -7,6 +7,7 @@ namespace App\Tests\Repository\Student;
 use App\Entity\Student;
 use App\Repository\StudentRepository;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityNotFoundException;
 
 class StudentRepositoryTest extends AbstractStudentRepositoryTest
 {
@@ -51,5 +52,14 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
         $this->subject->remove($student->getId());
 
         $this->assertNull($this->studentEntityManager->find(Student::class, $student->getId()));
+    }
+
+    public function testNotFoundEntityThrowsException()
+    {
+        $studentId = 'any_student_id';
+        $this->clearStudentFromDatabase($studentId);
+        $this->expectException(EntityNotFoundException::class);
+
+        $this->subject->findById($studentId);
     }
 }
