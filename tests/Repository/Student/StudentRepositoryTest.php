@@ -29,4 +29,24 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
         $result = $this->studentEntityManager->find(Student::class, $student->getId());
         $this->assertInstanceOf(Student::class, $result);
     }
+
+    public function testRemoveStudentRemovesEntity()
+    {
+        $student = new Student(
+            'any_id',
+            'REUS',
+            'Ludovic',
+            DateTimeImmutable::createFromFormat('d/m/Y', '07/01/1982')
+        );
+
+        $this->clearStudentFromDatabase($student->getId());
+
+        $this->studentEntityManager->persist($student);
+        $this->studentEntityManager->flush();
+        $this->assertInstanceOf(Student::class, $this->studentEntityManager->find(Student::class, $student->getId()));
+
+        $this->subject->remove($student->getId());
+
+        $this->assertNull($this->studentEntityManager->find(Student::class, $student->getId()));
+    }
 }

@@ -85,6 +85,25 @@ class StudentRepository extends ServiceEntityRepository
     }
 
     /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function remove(string ...$studentIds): void
+    {
+        $entities = $this->findBy(['id' => $studentIds]);
+        if (empty($entities)) {
+
+            return;
+        }
+
+        $em = $this->getEntityManager();
+        foreach ($entities as $entity) {
+            $em->remove($entity);
+        }
+        $em->flush();
+    }
+
+    /**
      * @param String[] $content
      */
     private function sanitizeContent(array $content): array
