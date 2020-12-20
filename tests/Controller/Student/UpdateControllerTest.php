@@ -66,4 +66,21 @@ class UpdateControllerTest extends ClientAwareTestCase
 
         return $this->client;
     }
+
+    /**
+     * Build a Student instance, configure given mock to return it and returns the instance.
+     */
+    private function expectsThisMockWillReturnStudent(MockObject $mockObject): Student
+    {
+        $expectedStudent = new Student(
+            'any_id',
+            'who cares ?',
+            'it is mocked',
+            new DateTimeImmutable()
+        );
+
+        $mockObject->expects($this->once())->method('updateFromRequest')->willReturn($expectedStudent);
+
+        return $expectedStudent;
+    }
 }
