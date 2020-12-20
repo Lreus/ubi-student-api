@@ -25,7 +25,7 @@ class PostControllerTest extends ClientAwareTestCase
      *
      * Then StudentRepository::save is called
      * And Controller returns a Json Response
-     * And response status code is 201 created
+     * And response status code is 201 (created)
      * And response content is an array
      * And response[id] is equal to the student identifier
      */
@@ -48,8 +48,9 @@ class PostControllerTest extends ClientAwareTestCase
     /**
      * Given I request a post Student
      * And StudentRepository does not validate request content
+     *
      * Then Controller returns a Json Response
-     * And response status code is 400 Bad request
+     * And response status code is 400 (Bad request)
      * And response content is an array
      * And response[message] is equal to:
      * """
@@ -78,8 +79,9 @@ class PostControllerTest extends ClientAwareTestCase
      * Given I request a post Student
      * And StudentRepository creates a Student from request
      * And StudentRepository::Save throws an OrmException
+     *
      * Then Controller returns a Json Response
-     * And response status code is 500 Internal server error
+     * And response status code is 500 (Internal server error)
      * And response content is an array
      * And response[message] is equal to "Internal server error"
      */
