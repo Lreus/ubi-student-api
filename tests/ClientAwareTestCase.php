@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Iterator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -53,5 +56,11 @@ abstract class ClientAwareTestCase extends WebTestCase
         $this->getTestClient()->getContainer()->set($mockedClass, $mock);
 
         return $mock;
+    }
+
+    public function ormExceptionProvider(): Iterator
+    {
+        yield [new ORMException()];
+        yield [new OptimisticLockException('optimistic exception', null)];
     }
 }

@@ -103,12 +103,6 @@ class PostControllerTest extends ClientAwareTestCase
         );
     }
 
-    public function ormExceptionProvider(): Iterator
-    {
-        yield [new ORMException()];
-        yield [new OptimisticLockException('optimistic exception', null)];
-    }
-
     /**
      * Build a Student instance, configure given mock to return it and returns the instance.
      */

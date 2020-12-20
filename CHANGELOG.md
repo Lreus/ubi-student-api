@@ -17,3 +17,8 @@ Ubitransport test: student api
 -
 
 - Fix Changelog for 0.2.0
+
+0.3.0
+-
+
+- Add Api endpoint to delete a student
