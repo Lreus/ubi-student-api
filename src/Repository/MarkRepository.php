@@ -26,11 +26,9 @@ class MarkRepository
         $constraint = new Assert\Collection([
             'fields' => [
                 'value' => [
-                    new Assert\Required([]),
                     new ValidMarkConstraint(),
                 ],
                 'subject' => [
-                    new Assert\Required([]),
                     new Assert\Type([
                         'type' => 'string',
                     ]),
