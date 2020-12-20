@@ -6,9 +6,10 @@ namespace App\Tests\Repository\Student;
 
 use App\Entity\Student;
 use App\Exception\ValidationException;
+use App\Repository\StudentRepository;
 
 /**
- * @covers \App\Repository\StudentRepository::createFromRequest
+ * @covers StudentRepository::createFromRequest
  */
 class CreateStudentTest extends AbstractStudentRepositoryTest
 {

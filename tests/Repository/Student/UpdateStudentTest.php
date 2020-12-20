@@ -8,9 +8,10 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
+use App\Repository\StudentRepository;
 
 /**
- * @covers \App\Repository\StudentRepository::updateFromRequest
+ * @covers StudentRepository::updateFromRequest
  */
 class UpdateStudentTest extends AbstractStudentRepositoryTest
 {
