@@ -12,7 +12,6 @@ use App\Tests\ClientAwareTestCase;
 use DateTimeImmutable;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Exception;
 use Iterator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -84,7 +83,7 @@ class PostControllerTest extends ClientAwareTestCase
      * And response content is an array
      * And response[message] is equal to "Internal server error"
      */
-    public function testOrmExceptionReturnsSanitizedMessage(Exception $exception)
+    public function testOrmExceptionReturnsSanitizedMessage(ORMException $exception)
     {
         $mock = $this->injectMockIntoClient(StudentRepository::class);
 
