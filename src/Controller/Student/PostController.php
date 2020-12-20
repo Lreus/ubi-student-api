@@ -17,9 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PostController extends JsonApiController
 {
     const BAD_REQUEST_MESSAGE = 'Required fields: "last_name" :string, "first_name": string, "birth_date": date(DD-MM-YYYY)';
-    /**
-     * @var StudentRepository
-     */
+
     private StudentRepository $repository;
 
     public function __construct(StudentRepository $repository)
