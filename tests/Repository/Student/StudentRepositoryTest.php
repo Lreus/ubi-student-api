@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Repository;
+namespace App\Tests\Repository\Student;
 
 use App\Entity\Student;
 use App\Repository\StudentRepository;
-use App\Tests\Repository\Student\AbstractStudentRepositoryTest;
 use DateTimeImmutable;
 
 class StudentRepositoryTest extends AbstractStudentRepositoryTest
