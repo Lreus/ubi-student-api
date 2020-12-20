@@ -32,7 +32,7 @@ class StudentRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(Student ...$students)
+    public function save(Student ...$students): void
     {
         $em = $this->getEntityManager();
         foreach ($students as $student) {
