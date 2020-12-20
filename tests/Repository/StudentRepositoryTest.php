@@ -11,6 +11,9 @@ use DateTimeImmutable;
 
 class StudentRepositoryTest extends AbstractStudentRepositoryTest
 {
+    /**
+     * @covers \App\Repository\StudentRepository::save
+     */
     public function testSavingEntity()
     {
         $student = new Student(
