@@ -5,29 +5,20 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Student;
 
 use App\Controller\Student\PostController;
+use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
-use App\Tests\ContainerMockGenerator;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdateControllerTest extends ClientAwareTestCase
 {
-    private ?ContainerMockGenerator $mockGenerator = null;
-
-    public function init()
-    {
-        if (!($this->mockGenerator instanceof ContainerMockGenerator)) {
-            $this->mockGenerator = new ContainerMockGenerator();
-        }
-    }
-
     public function testValidationExceptionReturnsBadRequest()
     {
-        $this->init();
-        $mock = $this->mockGenerator->injectMockIntoClient($this->client, StudentRepository::class);
+        $mock = $this->injectMockIntoClient(StudentRepository::class);
 
         $mock->method('updateFromRequest')->willThrowException(new ValidationException());
 
@@ -43,8 +34,7 @@ class UpdateControllerTest extends ClientAwareTestCase
 
     public function testEntityNotFoundExceptionReturns404()
     {
-        $this->init();
-        $mock = $this->mockGenerator->injectMockIntoClient($this->client, StudentRepository::class);
+        $mock = $this->injectMockIntoClient(StudentRepository::class);
 
         $mock->method('updateFromRequest')->willThrowException(new EntityNotFoundException());
 
