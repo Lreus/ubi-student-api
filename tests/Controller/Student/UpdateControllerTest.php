@@ -119,12 +119,6 @@ class UpdateControllerTest extends ClientAwareTestCase
         );
     }
 
-    public function ormExceptionProvider(): Iterator
-    {
-        yield [new ORMException()];
-        yield [new OptimisticLockException('optimistic exception', null)];
-    }
-
     /**
      * Perform request in instance's client and returns client.
      */
