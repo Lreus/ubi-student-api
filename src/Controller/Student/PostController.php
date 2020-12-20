@@ -32,16 +32,13 @@ class PostController extends JsonApiController
         try {
             $content = $this->getJsonContent($request);
             $student = $this->repository->createFromRequest($content);
+            $this->repository->save($student);
+
+            return $this->json(['id' => $student->getId()], Response::HTTP_CREATED);
         }  catch (JsonException | ValidationException $exception) {
             return $this->json(['message' => self::BAD_REQUEST_MESSAGE, Response::HTTP_BAD_REQUEST]);
-        }
-
-        try {
-            $this->repository->save($student);
-        } catch (OptimisticLockException | ORMException $exception) {
+        } catch (ORMException $exception) {
             return $this->getJsonStandardResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return $this->json(['id' => $student->getId()], Response::HTTP_CREATED);
     }
 }
