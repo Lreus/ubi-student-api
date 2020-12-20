@@ -7,6 +7,9 @@ namespace App\Tests\Repository\Student;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 
+/**
+ * @covers \App\Repository\StudentRepository::createFromRequest
+ */
 class CreateStudentTest extends AbstractStudentRepositoryTest
 {
     public function testBuildFromRequest(): Student
