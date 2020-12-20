@@ -11,7 +11,7 @@ use DateTimeImmutable;
 class StudentRepositoryTest extends AbstractStudentRepositoryTest
 {
     /**
-     * @covers \App\Repository\StudentRepository::save
+     * @covers StudentRepository::save()
      */
     public function testSavingEntity()
     {
@@ -30,6 +30,9 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
         $this->assertInstanceOf(Student::class, $result);
     }
 
+    /**
+     * @covers StudentRepository::remove()
+     */
     public function testRemoveStudentRemovesEntity()
     {
         $student = new Student(
