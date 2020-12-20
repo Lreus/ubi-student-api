@@ -102,7 +102,7 @@ class StudentRepository extends ServiceEntityRepository
     /**
      * @throws EntityNotFoundException
      */
-    public function findById(string $id): Student
+    public function require(string $id): Student
     {
         $student = $this->find($id);
         if ($student instanceof Student) {

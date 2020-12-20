@@ -60,6 +60,6 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
         $this->clearStudentFromDatabase($studentId);
         $this->expectException(EntityNotFoundException::class);
 
-        $this->subject->findById($studentId);
+        $this->subject->require($studentId);
     }
 }
