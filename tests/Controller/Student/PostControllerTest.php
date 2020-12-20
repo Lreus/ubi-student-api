@@ -9,7 +9,6 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
-use App\Tests\ContainerMockGenerator;
 use DateTimeImmutable;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -21,15 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostControllerTest extends ClientAwareTestCase
 {
-    private ?ContainerMockGenerator $mockGenerator = null;
-
-    public function init()
-    {
-        if (!($this->mockGenerator instanceof ContainerMockGenerator)) {
-            $this->mockGenerator = new ContainerMockGenerator();
-        }
-    }
-
     /**
      * Given I request a post Student
      * And StudentRepository creates a Student from request
@@ -42,12 +32,9 @@ class PostControllerTest extends ClientAwareTestCase
      */
     public function testCreatedStudentGenerateCreatedResponse()
     {
-        $this->init();
-        $mock = $this->mockGenerator->injectMockIntoClient($this->client, StudentRepository::class);
-
+        $mock = $this->injectMockIntoClient(StudentRepository::class);
         $expectedStudent = $this->expectsThisMockWillReturnStudent($mock);
-
-        $mock->expects($this->once())->method('save')->with($expectedStudent);
+        $mock->expects($this->exactly(1))->method('save')->with($expectedStudent);
 
         $client = $this->postStudent();
 
@@ -72,10 +59,10 @@ class PostControllerTest extends ClientAwareTestCase
      */
     public function testValidationExceptionReturnsBadRequest()
     {
-        $this->init();
-        $mock = $this->mockGenerator->injectMockIntoClient($this->client, StudentRepository::class);
+        $mock = $this->injectMockIntoClient(StudentRepository::class);
 
         $mock->method('createFromRequest')->willThrowException(new ValidationException());
+
 
         $this->client = $this->postStudent();
 
@@ -100,7 +87,7 @@ class PostControllerTest extends ClientAwareTestCase
     public function testOrmExceptionReturnsSanitizedMessage(Exception $exception)
     {
         $this->init();
-        $mock = $this->mockGenerator->injectMockIntoClient($this->client, StudentRepository::class);
+        $mock = $this->injectMockIntoClient(StudentRepository::class);
 
         $this->expectsThisMockWillReturnStudent($mock);
 
@@ -134,7 +121,7 @@ class PostControllerTest extends ClientAwareTestCase
             new DateTimeImmutable()
         );
 
-        $mockObject->method('createFromRequest')->willReturn($expectedStudent);
+        $mockObject->expects($this->once())->method('createFromRequest')->willReturn($expectedStudent);
 
         return $expectedStudent;
     }
