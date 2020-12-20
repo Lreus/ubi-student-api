@@ -86,7 +86,6 @@ class PostControllerTest extends ClientAwareTestCase
      */
     public function testOrmExceptionReturnsSanitizedMessage(Exception $exception)
     {
-        $this->init();
         $mock = $this->injectMockIntoClient(StudentRepository::class);
 
         $this->expectsThisMockWillReturnStudent($mock);
