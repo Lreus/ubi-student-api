@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller\Student;
+namespace App\Tests\Controller\Mark;
 
 use App\Entity\Student;
 use App\Repository\StudentRepository;
@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AverageControllerTest extends ClientAwareTestCase
+class StudentAverageControllerTest extends ClientAwareTestCase
 {
     public function testAverageIsReturnedAfterCalculation()
     {
