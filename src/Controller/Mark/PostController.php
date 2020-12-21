@@ -11,6 +11,7 @@ use App\Repository\StudentRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\ORMException;
 use JsonException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,9 +20,7 @@ class PostController extends JsonApiController
     const BAD_REQUEST_MESSAGE = 'Required fields: "value" :numeric, "subject": string';
 
     private StudentRepository $studentRepository;
-    /**
-     * @var MarkRepository
-     */
+
     private MarkRepository $markRepository;
 
     public function __construct(
@@ -32,7 +31,7 @@ class PostController extends JsonApiController
         $this->markRepository = $markRepository;
     }
 
-    public function __invoke(Request $request, string $studentId)
+    public function __invoke(Request $request, string $studentId): JsonResponse
     {
         try {
             $content = $this->getJsonContent($request);
