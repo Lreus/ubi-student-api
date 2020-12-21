@@ -10,10 +10,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ValidMarkConstraintValidator extends ConstraintValidator
 {
-    const NOT_FLOAT = 'notFloat';
-    const OUT_OF_RANGE = 'outOfRange';
-    const NOT_ROUNDED = 'notRounded';
-
     public function validate($value, Constraint $constraint)
     {
         if (!($constraint instanceof ValidMarkConstraint)) {
@@ -21,18 +17,18 @@ class ValidMarkConstraintValidator extends ConstraintValidator
         }
 
         if (!is_numeric($value)) {
-            $this->addViolation($value, $constraint, self::NOT_FLOAT);
+            $this->addViolation($value, $constraint, ValidMarkConstraint::NOT_FLOAT);
         }
 
         if(is_numeric($value)) {
             $floatValue = floatval($value);
 
             if(0 > $floatValue || 20 < $floatValue ) {
-                $this->addViolation($value, $constraint, self::OUT_OF_RANGE);
+                $this->addViolation($value, $constraint, ValidMarkConstraint::OUT_OF_RANGE);
             }
 
             if ($floatValue !== round($floatValue, 2)) {
-                $this->addViolation($value, $constraint, self::NOT_ROUNDED);
+                $this->addViolation($value, $constraint, ValidMarkConstraint::NOT_ROUNDED);
             }
         }
     }
