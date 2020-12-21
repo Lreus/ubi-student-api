@@ -8,7 +8,10 @@ use App\Entity\Mark;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\MarkRepository;
+use App\Repository\StudentRepository;
 use DateTimeImmutable;
+use Doctrine\Persistence\ObjectManager;
+use Iterator;
 use Ramsey\Uuid\Nonstandard\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -145,6 +148,43 @@ class MarkRepositoryTest extends KernelTestCase
                 'subject' => '   '
             ]
         ];
+    }
+
+    public function testSavingEntity()
+    {
+        $studentRepository = self::$container->get(StudentRepository::class);
+        $this->assertInstanceOf(StudentRepository::class, $studentRepository);
+        /** @var StudentRepository $studentRepository */
+        $studentRepository->remove('any_id');
+
+        $student = new Student(
+            'any_id',
+            'REUS',
+            'Ludovic',
+            DateTimeImmutable::createFromFormat('d/m/Y', '07/01/1982')
+        );
+
+        $mark = new Mark(
+            'another_id',
+            12.8,
+            'arts',
+            $student
+        );
+
+        $entityManager = self::$container->get('doctrine')->getManager();
+        $this->assertInstanceOf(ObjectManager::class, $entityManager);
+        /** @var ObjectManager $entityManager */
+        $existingMark = $entityManager->find(Mark::class, $mark->getId());
+        if (null !== $existingMark) {
+            $entityManager->remove($existingMark);
+            $entityManager->flush();
+        }
+
+        $this->subject->save($mark);
+
+        $result = $entityManager->find(Mark::class, 'another_id');
+
+        $this->assertSame($mark, $result);
     }
 
     protected function tearDown(): void
