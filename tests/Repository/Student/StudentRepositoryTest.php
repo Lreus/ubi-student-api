@@ -27,7 +27,7 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
 
         $this->subject->save($student);
 
-        $result = $this->studentEntityManager->find(Student::class, $student->getId());
+        $result = $this->entityManager->find(Student::class, $student->getId());
         $this->assertInstanceOf(Student::class, $result);
     }
 
@@ -45,13 +45,13 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
 
         $this->clearStudentFromDatabase($student->getId());
 
-        $this->studentEntityManager->persist($student);
-        $this->studentEntityManager->flush();
-        $this->assertInstanceOf(Student::class, $this->studentEntityManager->find(Student::class, $student->getId()));
+        $this->entityManager->persist($student);
+        $this->entityManager->flush();
+        $this->assertInstanceOf(Student::class, $this->entityManager->find(Student::class, $student->getId()));
 
         $this->subject->remove($student->getId());
 
-        $this->assertNull($this->studentEntityManager->find(Student::class, $student->getId()));
+        $this->assertNull($this->entityManager->find(Student::class, $student->getId()));
     }
 
     public function testNotFoundEntityThrowsException()

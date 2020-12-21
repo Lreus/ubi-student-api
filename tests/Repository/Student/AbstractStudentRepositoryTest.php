@@ -15,14 +15,14 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
 {
     protected StudentRepository $subject;
 
-    protected ObjectManager $studentEntityManager;
+    protected ObjectManager $entityManager;
 
     protected function setUp(): void
     {
         self::bootKernel();
         $this->subject = $this->getStudentRepository();
 
-        $this->studentEntityManager = $this->getEntityManager();
+        $this->entityManager = $this->getEntityManager();
     }
 
     private function getEntityManager(): ObjectManager
@@ -48,14 +48,14 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
 
     protected function clearStudentFromDatabase(string $studentId): void
     {
-        $existing = $this->studentEntityManager->find(Student::class, $studentId);
+        $existing = $this->entityManager->find(Student::class, $studentId);
         if (null === $existing) {
             return;
         }
 
-        $this->studentEntityManager->remove($existing);
-        $this->studentEntityManager->flush();
-        $this->assertNull($this->studentEntityManager->find(Student::class, $studentId));
+        $this->entityManager->remove($existing);
+        $this->entityManager->flush();
+        $this->assertNull($this->entityManager->find(Student::class, $studentId));
     }
 
     public function invalidStudentProvider(): Iterator
