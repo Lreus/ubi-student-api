@@ -42,7 +42,7 @@ class Mark
     ) {
         $this->id = $id;
         $this->value = $value;
-        $this->subject = $subject;
+        $this->subject = ucfirst(strtolower($subject));
         $this->student = $student;
     }
 
