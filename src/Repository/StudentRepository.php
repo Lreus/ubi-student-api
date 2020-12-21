@@ -88,7 +88,6 @@ class StudentRepository extends ServiceEntityRepository
     {
         $entities = $this->findBy(['id' => $studentIds]);
         if (empty($entities)) {
-
             return;
         }
 
@@ -116,7 +115,7 @@ class StudentRepository extends ServiceEntityRepository
     /**
      * @throws ValidationException
      */
-    private function validateContent(array $content): bool
+    private function validateContent(array $content): void
     {
         $violations = $this->validator->validate(
             $content,
@@ -126,8 +125,6 @@ class StudentRepository extends ServiceEntityRepository
         if (0 < $violations->count()) {
             throw new ValidationException($violations);
         }
-
-        return true;
     }
 
     private function getInputConstraint(): Constraint
