@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Mark;
+namespace App\Controller\Student;
 
 use App\Controller\JsonApiController;
 use App\Repository\StudentRepository;

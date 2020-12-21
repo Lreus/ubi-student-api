@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller\Mark;
+namespace App\Tests\Controller\Student;
 
 use App\Entity\Student;
 use App\Repository\StudentRepository;

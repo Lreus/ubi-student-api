@@ -3,10 +3,3 @@ create:
   methods: POST|PUT
   controller: App\Controller\Mark\PostController
   format: json
-
-
-average:
-  path: /student/{studentId}/marks/average.{_format}
-  methods: GET
-  controller: App\Controller\Mark\StudentAverageController
-  format: json
