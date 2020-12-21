@@ -8,6 +8,7 @@ use App\Controller\JsonApiController;
 use App\Repository\StudentRepository;
 use App\Service\AverageMarkService;
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class StudentAverageController extends JsonApiController
@@ -22,7 +23,7 @@ class StudentAverageController extends JsonApiController
         $this->service = $service;
     }
 
-    public function __invoke(string $studentId)
+    public function __invoke(string $studentId): JsonResponse
     {
         try {
             $student = $this->repository->require($studentId);
@@ -30,9 +31,9 @@ class StudentAverageController extends JsonApiController
             if (null === $averageMark) {
                 return $this->getJsonStandardResponse(Response::HTTP_NO_CONTENT);
             }
+            return $this->json(['average' => $averageMark], Response::HTTP_OK);
         } catch (EntityNotFoundException $exception) {
             return $this->getJsonStandardResponse(Response::HTTP_NOT_FOUND);
         }
-        return new Response();
     }
 }
