@@ -13,7 +13,10 @@ class ValidMarkConstraint extends Constraint
     const OUT_OF_RANGE = 'outOfRange';
     const NOT_ROUNDED = 'notRounded';
 
-    public function getMessage(string $reason)
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function getMessage(string $reason): string
     {
         switch ($reason){
             case self::OUT_OF_RANGE:
