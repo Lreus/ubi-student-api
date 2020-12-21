@@ -61,7 +61,7 @@ class StudentRepository extends ServiceEntityRepository
      * @throws ValidationException
      * @throws EntityNotFoundException
      */
-    public function updateFromRequest(array $content, string $userId)
+    public function updateFromRequest(array $content, string $userId): Student
     {
         $this->validateContent($content);
 
