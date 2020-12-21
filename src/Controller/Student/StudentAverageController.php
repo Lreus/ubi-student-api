@@ -28,9 +28,11 @@ class StudentAverageController extends JsonApiController
         try {
             $student = $this->repository->require($studentId);
             $averageMark = $this->service->calculate($student);
+
             if (null === $averageMark) {
                 return $this->getJsonStandardResponse(Response::HTTP_NO_CONTENT);
             }
+
             return $this->json(['average' => $averageMark], Response::HTTP_OK);
         } catch (EntityNotFoundException $exception) {
             return $this->getJsonStandardResponse(Response::HTTP_NOT_FOUND);
