@@ -7,7 +7,6 @@ namespace App\Controller\Student;
 use App\Controller\JsonApiController;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
