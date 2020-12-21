@@ -37,6 +37,7 @@ class PostController extends JsonApiController
             $content = $this->getJsonContent($request);
             $student = $this->studentRepository->require($studentId);
             $mark = $this->markRepository->createFromRequest($content, $student);
+            $this->markRepository->save($mark);
             return new Response();
         } catch (JsonException|ValidationException $exception) {
             return $this->json(['message' => self::BAD_REQUEST_MESSAGE], Response::HTTP_BAD_REQUEST);

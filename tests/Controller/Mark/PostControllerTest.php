@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Mark;
 
 use App\Controller\Mark\PostController;
+use App\Entity\Mark;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\MarkRepository;
@@ -12,12 +13,48 @@ use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostControllerTest extends ClientAwareTestCase
 {
+    public function testCreatedMarkIsPersisted()
+    {
+        $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);
+        $student = $this->expectsThisMockWillReturnStudent($studentRepositoryMock);
+
+        $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
+
+        $markRepositoryMock->method('createFromRequest')->willReturn(
+            $mark = new Mark(
+                'any_mark_id',
+                19.1,
+                'mathematics',
+                $student
+            )
+        );
+
+        $markRepositoryMock->expects($this->once())->method('save')->with($mark);
+
+        $this->client = $this->postMark();
+    }
+
+    public function expectsThisMockWillReturnStudent(MockObject $mock): Student
+    {
+        $student = new Student(
+            'any_id',
+            'who_cares',
+            'it is mocked',
+            new DateTimeImmutable()
+        );
+
+        $mock->method('require')->willReturn($student);
+
+        return $student;
+    }
+
     public function testCreatedMarkGenerateBadRequestOnValidationException()
     {
         $studentMock = $this->injectMockIntoClient(StudentRepository::class);
