@@ -50,7 +50,7 @@ class UpdateStudentTest extends AbstractStudentRepositoryTest
 
         $this->clearStudentFromDatabase($userId);
 
-        $this->studentEntityManager->persist(
+        $this->entityManager->persist(
             new Student(
                 $userId,
                 $userLastName,
@@ -59,7 +59,7 @@ class UpdateStudentTest extends AbstractStudentRepositoryTest
             )
         );
 
-        $this->studentEntityManager->flush();
+        $this->entityManager->flush();
 
         $updatedContent = [
             'first_name' => 'Thierry',

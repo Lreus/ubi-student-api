@@ -1,0 +1,11 @@
+create:
+  path: /student/{studentId}/mark.{_format}
+  methods: POST|PUT
+  controller: App\Controller\Mark\PostController
+  format: json
+
+average:
+  path: /marks/average.{_format}
+  methods: GET
+  controller: App\Controller\Mark\AverageController
+  format: json

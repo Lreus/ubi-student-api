@@ -4,3 +4,10 @@ students:
     name_prefix: students_
     requirements:
         _format: json
+
+marks:
+    resource: ./routes/marks.yml
+    prefix: /api
+    name_prefix: marks_
+    requirements:
+        _format: json

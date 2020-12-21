@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -29,6 +31,9 @@ class Student
     /** @ORM\Column(type="date_immutable") */
     private DateTimeImmutable $birthDate;
 
+    /** @ORM\OneToMany(targetEntity="Mark", mappedBy="student", cascade={"remove"}) */
+    private Collection $marks;
+
     public function __construct(
         string $id,
         string $lastName,
@@ -39,6 +44,7 @@ class Student
         $this->lastName = $lastName;
         $this->firstName = $firstName;
         $this->birthDate = $birthDate;
+        $this->marks = new ArrayCollection();
     }
 
     public function getId(): string
@@ -59,6 +65,14 @@ class Student
     public function getBirthDate(): DateTimeImmutable
     {
         return $this->birthDate;
+    }
+
+    /**
+     * @return ArrayCollection|Collection|Mark[]
+     */
+    public function getMarks(): Collection
+    {
+        return $this->marks;
     }
 
     public function setLastName(string $lastName): void
