@@ -41,8 +41,8 @@ class Student
         DateTimeImmutable $birthDate
     ) {
         $this->id = $id;
-        $this->lastName = $lastName;
-        $this->firstName = $firstName;
+        $this->lastName = strtoupper($lastName);
+        $this->firstName = ucfirst(strtolower($firstName));
         $this->birthDate = $birthDate;
         $this->marks = new ArrayCollection();
     }
