@@ -41,10 +41,11 @@ class Student
         DateTimeImmutable $birthDate
     ) {
         $this->id = $id;
-        $this->lastName = $lastName;
-        $this->firstName = $firstName;
         $this->birthDate = $birthDate;
         $this->marks = new ArrayCollection();
+
+        $this->setLastName($lastName);
+        $this->setFirstName($firstName);
     }
 
     public function getId(): string
@@ -77,12 +78,12 @@ class Student
 
     public function setLastName(string $lastName): void
     {
-        $this->lastName = $lastName;
+        $this->lastName = strtoupper($lastName);
     }
 
     public function setFirstName(string $firstName): void
     {
-        $this->firstName = $firstName;
+        $this->firstName = ucfirst(strtolower($firstName));
     }
 
     public function setBirthDate(DateTimeImmutable $birthDate): void

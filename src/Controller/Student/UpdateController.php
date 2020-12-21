@@ -10,6 +10,7 @@ use App\Repository\StudentRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\ORMException;
 use JsonException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,7 +23,7 @@ class UpdateController extends JsonApiController
         $this->repository = $repository;
     }
 
-    public function __invoke(Request $request, string $studentId)
+    public function __invoke(Request $request, string $studentId): JsonResponse
     {
         try {
             $content = $this->getJsonContent($request);

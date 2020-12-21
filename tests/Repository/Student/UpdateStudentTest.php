@@ -70,8 +70,8 @@ class UpdateStudentTest extends AbstractStudentRepositoryTest
         $result = $this->subject->updateFromRequest($updatedContent, $userId);
 
         $this->assertInstanceOf(Student::class, $result);
-        $this->assertSame($result->getLastName(), $updatedContent['last_name']);
-        $this->assertSame($result->getFirstName(), $updatedContent['first_name']);
+        $this->assertSame($result->getLastName(), strtoupper($updatedContent['last_name']));
+        $this->assertSame($result->getFirstName(), ucfirst(strtolower($updatedContent['first_name'])));
         $this->assertSame($result->getBirthDate()->format('d/m/Y'), $updatedContent['birth_date']);
     }
 }

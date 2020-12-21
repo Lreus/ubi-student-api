@@ -42,3 +42,9 @@ First part release: Student basic management
 1.2.0
 --
 - Add feature to get Student scholastic average and global average for whole students
+
+1.2.1
+--
+- Fix some missing return types
+- Fix some useless imports
+- Ensure entities format their string contents
