@@ -9,6 +9,7 @@ use App\Exception\ValidationException;
 use App\Repository\MarkRepository;
 use App\Repository\StudentRepository;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\ORMException;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,6 +44,8 @@ class PostController extends JsonApiController
             return $this->json(['message' => self::BAD_REQUEST_MESSAGE], Response::HTTP_BAD_REQUEST);
         } catch (EntityNotFoundException $exception) {
             return $this->getJsonStandardResponse(Response::HTTP_NOT_FOUND);
+        } catch (ORMException $exception) {
+            return $this->getJsonStandardResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
 

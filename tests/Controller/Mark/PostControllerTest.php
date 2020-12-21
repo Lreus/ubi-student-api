@@ -13,6 +13,7 @@ use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\ORMException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,36 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostControllerTest extends ClientAwareTestCase
 {
+    /**
+     * @dataProvider ormExceptionProvider
+     */
+    public function testOrmExceptionReturnsSanitizedMessage(ORMException $exception)
+    {
+        $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);
+        $student = $this->expectsThisMockWillReturnStudent($studentRepositoryMock);
+
+        $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
+        $markRepositoryMock->method('createFromRequest')->willReturn(
+            new Mark(
+                'any_mark_id',
+                19.1,
+                'mathematics',
+                $student
+            )
+        );
+
+        $markRepositoryMock->method('save')->willThrowException($exception);
+
+        $this->client = $this->postMark();
+        $response = $this->decodeResponse();
+
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(
+            'Internal Server Error',
+            $response['message']
+        );
+    }
+
     public function testCreatedMarkIsPersisted()
     {
         $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);

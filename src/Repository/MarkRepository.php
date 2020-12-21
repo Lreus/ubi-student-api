@@ -9,6 +9,8 @@ use App\Entity\Mark;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Validator\Constraint;
@@ -26,6 +28,10 @@ class MarkRepository extends ServiceEntityRepository
         parent::__construct($registry,Mark::class);
     }
 
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function save(Mark ...$marks)
     {
         $em = $this->getEntityManager();
