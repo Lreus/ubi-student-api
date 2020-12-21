@@ -23,6 +23,6 @@ class AverageMarkService
             $marks
         );
 
-        return array_sum($values)/count($marks);
+        return round(array_sum($values)/count($marks), 2);
     }
 }

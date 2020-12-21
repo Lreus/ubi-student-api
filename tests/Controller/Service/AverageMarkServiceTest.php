@@ -8,6 +8,7 @@ use App\Entity\Mark;
 use App\Entity\Student;
 use App\Service\AverageMarkService;
 use DateTimeImmutable;
+use Iterator;
 use PHPUnit\Framework\TestCase;
 
 class AverageMarkServiceTest extends TestCase
@@ -37,20 +38,43 @@ class AverageMarkServiceTest extends TestCase
         );
     }
 
-    public function testReturnAverageOfMarks()
+    /**
+     * @dataProvider markProvider
+     */
+    public function testReturnAverageOfMarks(float $expected, float ...$markValues)
     {
         $student = $this->getSingleStudent();
 
-        $marks = [
-            new Mark('mark', 12, 'Grammar', $student),
-            new Mark('mark', 7.5, 'Grammar', $student),
-            new Mark('mark', 19.8, 'Grammar', $student),
-        ];
+        array_walk(
+            $markValues,
+            function (float $markValue) use($student) {
+                $student->getMarks()->add(
+                    new Mark('mark', $markValue, 'Grammar', $student)
+                );
+            }
+        );
 
-        foreach ($marks as $mark) {
-            $student->getMarks()->add($mark);
-        }
+        $this->assertEquals($expected, $this->subject->calculate($student));
+    }
 
-        $this->assertEquals(13.1, $this->subject->calculate($student));
+    public function markProvider(): Iterator
+    {
+        // Classic
+        yield [13.1, 12, 7.5, 19.8];
+
+        // Integers
+        yield [7, 9, 5, 8, 6];
+
+        // Single Mark
+        yield [ 5, 5 ];
+
+        // Rounded superior
+        yield [7.67, 9, 9, 5];
+
+        // Exactly two decimals
+        yield [5.75, 9, 7, 2, 5];
+
+        // Rounded Inferior
+        yield [4.33, 6, 1, 6];
     }
 }
