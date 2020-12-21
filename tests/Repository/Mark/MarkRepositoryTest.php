@@ -185,6 +185,7 @@ class MarkRepositoryTest extends KernelTestCase
         $result = $entityManager->find(Mark::class, 'another_id');
 
         $this->assertSame($mark, $result);
+        $this->assertSame($mark->getStudent(), $student);
     }
 
     protected function tearDown(): void
