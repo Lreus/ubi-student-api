@@ -7,6 +7,7 @@ namespace App\Controller\Mark;
 use App\Controller\JsonApiController;
 use App\Repository\StudentRepository;
 use App\Service\AverageMarkService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class AverageController extends JsonApiController
@@ -21,7 +22,7 @@ class AverageController extends JsonApiController
         $this->service = $service;
     }
 
-    public function __invoke()
+    public function __invoke(): JsonResponse
     {
         $students = $this->repository->findAll();
         $averageMark = $this->service->calculate(...$students);
