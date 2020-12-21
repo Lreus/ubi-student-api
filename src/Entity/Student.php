@@ -31,7 +31,7 @@ class Student
     /** @ORM\Column(type="date_immutable") */
     private DateTimeImmutable $birthDate;
 
-    /** @ORM\OneToMany(targetEntity="Mark", mappedBy="student") */
+    /** @ORM\OneToMany(targetEntity="Mark", mappedBy="student", cascade={"remove"}) */
     private Collection $marks;
 
     public function __construct(
