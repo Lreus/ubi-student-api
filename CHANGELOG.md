@@ -34,3 +34,7 @@ First part release: Student basic management
 1.0.1
 --
 - Fix student validation to handle non string in names
+
+1.1.0
+--
+- Add Api endpoint to add a mark to a student

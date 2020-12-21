@@ -115,7 +115,7 @@ class PostControllerTest extends ClientAwareTestCase
             new DateTimeImmutable()
         );
 
-        $mockObject->expects($this->once())->method('createFromRequest')->willReturn($expectedStudent);
+        $mockObject->method('createFromRequest')->willReturn($expectedStudent);
 
         return $expectedStudent;
     }
