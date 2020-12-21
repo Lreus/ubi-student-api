@@ -8,18 +8,32 @@ use App\Constraint\ValidMarkConstraint;
 use App\Entity\Mark;
 use App\Entity\Student;
 use App\Exception\ValidationException;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\Uuid;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class MarkRepository
+class MarkRepository extends ServiceEntityRepository
 {
     private ValidatorInterface $validator;
 
-    public function __construct(ValidatorInterface $validator)
+    public function __construct(ManagerRegistry $registry, ValidatorInterface $validator)
     {
         $this->validator = $validator;
+
+        parent::__construct($registry,Mark::class);
+    }
+
+    public function save(Mark ...$marks)
+    {
+        $em = $this->getEntityManager();
+        foreach ($marks as $mark) {
+            $em->persist($mark);
+        }
+
+        $em->flush();
     }
 
     /**
