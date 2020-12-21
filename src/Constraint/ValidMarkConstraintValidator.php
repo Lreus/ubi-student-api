@@ -10,7 +10,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ValidMarkConstraintValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    /**
+     * @param mixed $value
+     *
+     * @throws UnexpectedTypeException
+     */
+    public function validate($value, Constraint $constraint): void
     {
         if (!($constraint instanceof ValidMarkConstraint)) {
             throw new UnexpectedTypeException($constraint, ValidMarkConstraint::class);
@@ -33,7 +38,10 @@ class ValidMarkConstraintValidator extends ConstraintValidator
         }
     }
 
-    private function addViolation($value, ValidMarkConstraint $constraint, string $reason)
+    /**
+     * @param mixed $value
+     */
+    private function addViolation($value, ValidMarkConstraint $constraint, string $reason): void
     {
         $this->context->buildViolation($constraint->getMessage($reason))
             ->setParameter('{{ string }}', (string) $value)
