@@ -16,6 +16,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AverageControllerTest extends ClientAwareTestCase
 {
+    public function testAssertNoContentIsReturnedOnStudentWithNoMark()
+    {
+        $averageServiceMock = $this->injectMockIntoClient(AverageMarkService::class);
+        $this->injectMockIntoClient(StudentRepository::class);
+
+        $averageServiceMock->method('calculate')->willReturn(null);
+
+        $client = $this->getAverage();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+    }
+
     public function testCalculationIsDelegatedToMock()
     {
         $averageServiceMock = $this->injectMockIntoClient(AverageMarkService::class);
@@ -30,7 +42,7 @@ class AverageControllerTest extends ClientAwareTestCase
 
         $averageServiceMock->expects($this->once())->method('calculate')->with($student);
 
-        $client = $this->getAverage();
+        $this->getAverage();
     }
 
     /**
