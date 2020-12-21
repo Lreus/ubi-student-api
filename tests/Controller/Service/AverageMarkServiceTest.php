@@ -28,6 +28,26 @@ class AverageMarkServiceTest extends TestCase
         $this->assertNull($result);
     }
 
+    public function testReturnsNullOnNoMarksForMultipleStudent()
+    {
+        $student1 = $this->getSingleStudent();
+        $student2 = $this->getSingleStudent();
+
+        $result = $this->subject->calculate($student1, $student2);
+        $this->assertNull($result);
+    }
+
+    public function testReturnsAverageOfStudentAverageForMultipleStudent()
+    {
+        $student1 = $this->getSingleStudent();
+        $student2 = $this->getSingleStudent();
+
+        $this->hydrateStudentWithMarks($student1, 5, 8.7, 16.2, 15); //rounded avg 11.23
+        $this->hydrateStudentWithMarks($student2, 0, 12, 8.5, 14.2); //rounded avg 8.68
+
+        $this->assertEquals(9.96, $this->subject->calculate($student1, $student2)); // rounded 9.955
+    }
+
     public function getSingleStudent(): Student
     {
         return new Student(
@@ -45,14 +65,7 @@ class AverageMarkServiceTest extends TestCase
     {
         $student = $this->getSingleStudent();
 
-        array_walk(
-            $markValues,
-            function (float $markValue) use($student) {
-                $student->getMarks()->add(
-                    new Mark('mark', $markValue, 'Grammar', $student)
-                );
-            }
-        );
+        $this->hydrateStudentWithMarks($student, ...$markValues);
 
         $this->assertEquals($expected, $this->subject->calculate($student));
     }
@@ -76,5 +89,19 @@ class AverageMarkServiceTest extends TestCase
 
         // Rounded Inferior
         yield [4.33, 6, 1, 6];
+    }
+
+    private function hydrateStudentWithMarks(Student $student, float ...$markValues): Student
+    {
+        array_walk(
+            $markValues,
+            function (float $markValue) use($student) {
+                $student->getMarks()->add(
+                    new Mark('mark', $markValue, 'Grammar', $student)
+                );
+            }
+        );
+
+        return $student;
     }
 }

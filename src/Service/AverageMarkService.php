@@ -9,20 +9,37 @@ use App\Entity\Student;
 
 class AverageMarkService
 {
-    public function calculate(Student $student): ?float
+    public function calculate(Student ...$students): ?float
     {
-        $marks = $student->getMarks()->toArray();
-        if (empty($marks)) {
+        $averages = [];
+        foreach ($students as $student) {
+            $marks = $student->getMarks()->toArray();
+            if (empty($marks)) {
+                continue;
+            }
+
+            $values = array_map(
+                function (Mark $mark) {
+                    return $mark->getValue();
+                },
+                $marks
+            );
+
+            $averages[] = $this->getAverage($values);
+        }
+
+        if (empty($averages)) {
             return null;
         }
 
-        $values = array_map(
-            function (Mark $mark) {
-                return $mark->getValue();
-            },
-            $marks
-        );
+        return $this->getAverage($averages);
+    }
 
-        return round(array_sum($values)/count($marks), 2);
+    /**
+     * @param float[] $values
+     */
+    private function getAverage(array $values): float
+    {
+        return round(array_sum($values)/count($values), 2);
     }
 }
