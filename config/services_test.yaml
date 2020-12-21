@@ -8,5 +8,6 @@ services:
 
   App\Repository\MarkRepository:
     arguments:
+      - '@doctrine'
       - '@validator'
     public: true
