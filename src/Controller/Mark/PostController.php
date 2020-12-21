@@ -39,7 +39,7 @@ class PostController extends JsonApiController
             $student = $this->studentRepository->require($studentId);
             $mark = $this->markRepository->createFromRequest($content, $student);
             $this->markRepository->save($mark);
-            return new Response();
+            return $this->json(['id' => $mark->getId()], Response::HTTP_CREATED);
         } catch (JsonException|ValidationException $exception) {
             return $this->json(['message' => self::BAD_REQUEST_MESSAGE], Response::HTTP_BAD_REQUEST);
         } catch (EntityNotFoundException $exception) {
@@ -47,7 +47,5 @@ class PostController extends JsonApiController
         } catch (ORMException $exception) {
             return $this->getJsonStandardResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-
     }
 }

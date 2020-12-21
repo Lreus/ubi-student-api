@@ -21,6 +21,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostControllerTest extends ClientAwareTestCase
 {
+    public function testCreatedResponseIsGeneratedOnSuccess()
+    {
+        $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);
+        $student = $this->expectsThisMockWillReturnStudent($studentRepositoryMock);
+
+        $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
+        $expectedMark = $this->expectsMockWillReturnMarkForStudent($markRepositoryMock, $student);
+
+        $client = $this->postMark();
+
+        $response = $client->getResponse();
+        $this->assertStringContainsString('application/json', $response->headers->get('Content-type'));
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+
+        $decodedResponse = $this->decodeResponse();
+        $this->assertSame($expectedMark->getId(), $decodedResponse['id']);
+    }
+
     /**
      * @dataProvider ormExceptionProvider
      */
@@ -57,15 +75,7 @@ class PostControllerTest extends ClientAwareTestCase
         $student = $this->expectsThisMockWillReturnStudent($studentRepositoryMock);
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
-
-        $markRepositoryMock->method('createFromRequest')->willReturn(
-            $mark = new Mark(
-                'any_mark_id',
-                19.1,
-                'mathematics',
-                $student
-            )
-        );
+        $mark = $this->expectsMockWillReturnMarkForStudent($markRepositoryMock, $student);
 
         $markRepositoryMock->expects($this->once())->method('save')->with($mark);
 
@@ -134,6 +144,20 @@ class PostControllerTest extends ClientAwareTestCase
             'Not Found',
             $response['message']
         );
+    }
+
+    public function expectsMockWillReturnMarkForStudent(MockObject $mockObject, Student $student): Mark
+    {
+        $mockObject->method('createFromRequest')->willReturn(
+            $mark = new Mark(
+                'any_mark_id',
+                19.1,
+                'mathematics',
+                $student
+            )
+        );
+
+        return $mark;
     }
 
     public function postMark(array $postParameters = [], string $studentId = 'who_cares' ): KernelBrowser
