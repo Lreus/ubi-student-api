@@ -75,7 +75,7 @@ class MarkRepositoryTest extends KernelTestCase
         $this->subject->createFromRequest($requestContent, $providedStudent);
     }
 
-    public function invalidDataProvider(): \Iterator
+    public function invalidDataProvider(): Iterator
     {
         // Missing subject
         yield [
