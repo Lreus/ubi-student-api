@@ -9,6 +9,7 @@ use App\Entity\Mark;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,24 +22,12 @@ class MarkRepository
         $this->validator = $validator;
     }
 
-    public function createFromRequest(array $content, Student $student)
+    /**
+     * @throws ValidationException
+     */
+    public function createFromRequest(array $content, Student $student): Mark
     {
-        $constraint = new Assert\Collection([
-            'fields' => [
-                'value' => [
-                    new ValidMarkConstraint(),
-                ],
-                'subject' => [
-                    new Assert\Type([
-                        'type' => 'string',
-                    ]),
-                    new Assert\NotBlank([
-                        'normalizer' => 'trim'
-                        ]
-                    ),
-                ],
-            ],
-        ]);
+        $constraint = $this->loadRequestConstraint();
 
         $violationList = $this->validator->validate($content, $constraint);
         if (0 < count($violationList)) {
@@ -51,5 +40,25 @@ class MarkRepository
             $content['subject'],
             $student
         );
+    }
+
+    private function loadRequestConstraint(): Constraint
+    {
+        return new Assert\Collection([
+            'fields' => [
+                'value' => [
+                    new ValidMarkConstraint(),
+                ],
+                'subject' => [
+                    new Assert\Type([
+                        'type' => 'string',
+                    ]),
+                    new Assert\NotBlank([
+                            'normalizer' => 'trim'
+                        ]
+                    ),
+                ],
+            ],
+        ]);
     }
 }
