@@ -11,3 +11,6 @@ services:
       - '@doctrine'
       - '@validator'
     public: true
+
+  App\Service\AverageMarkService:
+    public: true

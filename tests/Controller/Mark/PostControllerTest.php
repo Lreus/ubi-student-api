@@ -23,8 +23,8 @@ class PostControllerTest extends ClientAwareTestCase
 {
     public function testCreatedResponseIsGeneratedOnSuccess()
     {
-        $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->expectsThisMockWillReturnStudent($studentRepositoryMock);
+        $this->injectMockIntoClient(StudentRepository::class);
+        $student = $this->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $expectedMark = $this->expectsMockWillReturnMarkForStudent($markRepositoryMock, $student);
@@ -44,8 +44,8 @@ class PostControllerTest extends ClientAwareTestCase
      */
     public function testOrmExceptionReturnsSanitizedMessage(ORMException $exception)
     {
-        $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->expectsThisMockWillReturnStudent($studentRepositoryMock);
+        $this->injectMockIntoClient(StudentRepository::class);
+        $student = $this->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $markRepositoryMock->method('createFromRequest')->willReturn(
@@ -71,8 +71,8 @@ class PostControllerTest extends ClientAwareTestCase
 
     public function testCreatedMarkIsPersisted()
     {
-        $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->expectsThisMockWillReturnStudent($studentRepositoryMock);
+        $this->injectMockIntoClient(StudentRepository::class);
+        $student = $this->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $mark = $this->expectsMockWillReturnMarkForStudent($markRepositoryMock, $student);
@@ -84,27 +84,25 @@ class PostControllerTest extends ClientAwareTestCase
 
     public function expectsThisMockWillReturnStudent(MockObject $mock): Student
     {
-        $student = new Student(
-            'any_id',
-            'who_cares',
-            'it is mocked',
-            new DateTimeImmutable()
-        );
-
+        $student = $this->buildAnyStudent();
         $mock->method('require')->willReturn($student);
 
         return $student;
     }
 
-    public function testCreatedMarkGenerateBadRequestOnValidationException()
+    public function buildAnyStudent(): Student
     {
-        $studentMock = $this->injectMockIntoClient(StudentRepository::class);
-        $studentMock->method('require')->willReturn(new Student(
+        return new Student(
             'any_id',
             'who_cares',
             'it is mocked',
             new DateTimeImmutable()
-        ));
+        );
+    }
+
+    public function testCreatedMarkGenerateBadRequestOnValidationException()
+    {
+        $this->injectMockIntoClient(StudentRepository::class);
 
         $mock = $this->injectMockIntoClient(MarkRepository::class);
         $mock->method('createFromRequest')->willThrowException(new ValidationException());
@@ -163,15 +161,15 @@ class PostControllerTest extends ClientAwareTestCase
     public function postMark(array $postParameters = [], string $studentId = 'who_cares' ): KernelBrowser
     {
         $this->client->request(
-        Request::METHOD_POST,
-        sprintf('/api/student/%s/mark', $studentId),
-        [],
-        [],
-        [
-            'HTTP_Accept' => 'application/json'
-        ],
-        json_encode($postParameters)
-    );
+            Request::METHOD_POST,
+            sprintf('/api/student/%s/mark', $studentId),
+            [],
+            [],
+            [
+                'HTTP_Accept' => 'application/json'
+            ],
+            json_encode($postParameters)
+        );
 
         return $this->client;
     }
