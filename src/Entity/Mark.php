@@ -29,7 +29,7 @@ class Mark
     private string $subject;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Student", inversedBy="marks")
+     * @ORM\ManyToOne(targetEntity="Student", inversedBy="marks", cascade={"persist"})
      * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
      */
     private Student $student;
