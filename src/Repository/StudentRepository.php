@@ -61,13 +61,13 @@ class StudentRepository extends ServiceEntityRepository
      * @throws ValidationException
      * @throws EntityNotFoundException
      */
-    public function updateFromRequest(array $content, string $userId): Student
+    public function updateFromRequest(array $content, string $studentId): Student
     {
         $this->validateContent($content);
 
-        $student = $this->find($userId);
+        $student = $this->find($studentId);
         if (!($student instanceof Student)) {
-            $message = sprintf('Unknown student identified by "%s"', $userId);
+            $message = sprintf('Unknown student identified by "%s"', $studentId);
             throw new EntityNotFoundException($message);
         }
 
