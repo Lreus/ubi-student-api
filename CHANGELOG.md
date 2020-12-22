@@ -61,4 +61,8 @@ First part release: Student basic management
 
 1.4.1
 --
-- Fix documentation date format 
+- Fix documentation date format
+
+1.4.2
+--
+- Fix route documentation

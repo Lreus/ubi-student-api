@@ -201,7 +201,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
-  /student{studentId}/mark:
+  /student/{studentId}/mark:
     put:
       tags:
         - Student
@@ -304,7 +304,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
-  /student{studentId}/marks/average:
+  /student/{studentId}/marks/average:
     get:
       tags:
         - Student
