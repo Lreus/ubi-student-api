@@ -374,6 +374,7 @@ components:
         birth_date:
           type: string
           format: date
+          example: 22/12/2012
     Mark:
       required:
         - subject
