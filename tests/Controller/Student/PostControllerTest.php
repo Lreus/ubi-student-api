@@ -9,7 +9,6 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
-use DateTimeImmutable;
 use Doctrine\ORM\ORMException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -19,7 +18,7 @@ class PostControllerTest extends ClientAwareTestCase
 {
     /**
      * Given I request a post Student
-     * And StudentRepository creates a Student from request
+     * And StudentRepository creates a Student from request.
      *
      * Then StudentRepository::save is called
      * And Controller returns a Json Response
@@ -45,7 +44,7 @@ class PostControllerTest extends ClientAwareTestCase
 
     /**
      * Given I request a post Student
-     * And StudentRepository does not validate request content
+     * And StudentRepository does not validate request content.
      *
      * Then Controller returns a Json Response
      * And response status code is 400 (Bad request)
@@ -60,7 +59,6 @@ class PostControllerTest extends ClientAwareTestCase
         $mock = $this->injectMockIntoClient(StudentRepository::class);
 
         $mock->method('createFromRequest')->willThrowException(new ValidationException());
-
 
         $this->client = $this->postStudent();
 
@@ -106,12 +104,7 @@ class PostControllerTest extends ClientAwareTestCase
      */
     private function expectsThisMockWillReturnStudent(MockObject $mockObject): Student
     {
-        $expectedStudent = new Student(
-            'anyId',
-            'Doe',
-            'John',
-            new DateTimeImmutable()
-        );
+        $expectedStudent = $this->objectModelFactory->buildAnyStudent();
 
         $mockObject->method('createFromRequest')->willReturn($expectedStudent);
 
@@ -129,7 +122,7 @@ class PostControllerTest extends ClientAwareTestCase
             [],
             [],
             [
-                'HTTP_Accept' => 'application/json'
+                'HTTP_Accept' => 'application/json',
             ],
             json_encode($postParameters)
         );

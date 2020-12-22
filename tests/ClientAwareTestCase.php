@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\Tests\Utils\ObjectModelFactory;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Iterator;
@@ -15,9 +16,12 @@ abstract class ClientAwareTestCase extends WebTestCase
 {
     protected KernelBrowser $client;
 
+    protected ObjectModelFactory $objectModelFactory;
+
     protected function setUp(): void
     {
         $this->client = self::createClient();
+        $this->objectModelFactory = new ObjectModelFactory();
     }
 
     /**

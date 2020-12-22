@@ -6,6 +6,7 @@ namespace App\Tests\Repository\Student;
 
 use App\Entity\Student;
 use App\Repository\StudentRepository;
+use App\Tests\Utils\ObjectModelFactory;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Persistence\ObjectManager;
 use Iterator;
@@ -17,12 +18,15 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
 
     protected ObjectManager $entityManager;
 
+    protected ObjectModelFactory $objectModelFactory;
+
     protected function setUp(): void
     {
         self::bootKernel();
         $this->subject = $this->getStudentRepository();
 
         $this->entityManager = $this->getEntityManager();
+        $this->objectModelFactory = new ObjectModelFactory();
     }
 
     private function getEntityManager(): ObjectManager
@@ -42,7 +46,7 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
         $repository = self::$container->get(StudentRepository::class);
         $this->assertInstanceOf(StudentRepository::class, $repository);
 
-        /** @var StudentRepository $repository */
+        /* @var StudentRepository $repository */
         return $repository;
     }
 
@@ -62,7 +66,7 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
     {
         // empty array
         yield [
-            []
+            [],
         ];
 
         // missing or misspelled fields
@@ -70,21 +74,21 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
             [
                 'first_name' => 'Ludovic',
                 'birth_date' => '07/01/1982',
-            ]
+            ],
         ];
 
         yield [
             [
                 'last_name' => 'REUS',
                 'birth_date' => '07/01/1982',
-            ]
+            ],
         ];
 
         yield [
             [
                 'first_name' => 'Ludovic',
                 'last_name' => 'REUS',
-            ]
+            ],
         ];
 
         // empty values
@@ -93,7 +97,7 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
                 'first_name' => '  ',
                 'last_name' => 'REUS',
                 'birth_date' => '07/01/1982',
-            ]
+            ],
         ];
 
         yield [
@@ -101,7 +105,7 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
                 'first_name' => 'Ludovic',
                 'last_name' => '  ',
                 'birth_date' => '07/01/1982',
-            ]
+            ],
         ];
 
         // Invalid format Date
@@ -110,7 +114,7 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
                 'first_name' => 'Ludovic',
                 'last_name' => 'REUS',
                 'birth_date' => '07-01-1982',
-            ]
+            ],
         ];
 
         // Invalid types
@@ -119,7 +123,7 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
                 'first_name' => 1,
                 'last_name' => 10,
                 'birth_date' => '07-01-1982',
-            ]
+            ],
         ];
 
         yield [
@@ -127,7 +131,7 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
                 'first_name' => 'Ludovic',
                 'last_name' => 'REUS',
                 'birth_date' => '07-01-1982',
-            ]
+            ],
         ];
     }
 

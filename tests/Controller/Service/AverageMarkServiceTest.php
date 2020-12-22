@@ -7,7 +7,7 @@ namespace App\Tests\Controller\Service;
 use App\Entity\Mark;
 use App\Entity\Student;
 use App\Service\AverageMarkService;
-use DateTimeImmutable;
+use App\Tests\Utils\ObjectModelFactory;
 use Iterator;
 use PHPUnit\Framework\TestCase;
 
@@ -15,14 +15,17 @@ class AverageMarkServiceTest extends TestCase
 {
     private AverageMarkService $subject;
 
+    private ObjectModelFactory $objectModelFactory;
+
     protected function setUp(): void
     {
         $this->subject = new AverageMarkService();
+        $this->objectModelFactory = new ObjectModelFactory();
     }
 
     public function testReturnsNullOnNoMarks()
     {
-        $student = $this->getSingleStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $result = $this->subject->calculate($student);
         $this->assertNull($result);
@@ -30,8 +33,8 @@ class AverageMarkServiceTest extends TestCase
 
     public function testReturnsNullOnNoMarksForMultipleStudent()
     {
-        $student1 = $this->getSingleStudent();
-        $student2 = $this->getSingleStudent();
+        $student1 = $this->objectModelFactory->buildAnyStudent();
+        $student2 = $this->objectModelFactory->buildAnyStudent();
 
         $result = $this->subject->calculate($student1, $student2);
         $this->assertNull($result);
@@ -39,8 +42,8 @@ class AverageMarkServiceTest extends TestCase
 
     public function testReturnsAverageOfStudentAverageForMultipleStudent()
     {
-        $student1 = $this->getSingleStudent();
-        $student2 = $this->getSingleStudent();
+        $student1 = $this->objectModelFactory->buildAnyStudent();
+        $student2 = $this->objectModelFactory->buildAnyStudent();
 
         $this->hydrateStudentWithMarks($student1, 5, 8.7, 16.2, 15); //rounded avg 11.23
         $this->hydrateStudentWithMarks($student2, 0, 12, 8.5, 14.2); //rounded avg 8.68
@@ -48,22 +51,12 @@ class AverageMarkServiceTest extends TestCase
         $this->assertEquals(9.96, $this->subject->calculate($student1, $student2)); // rounded 9.955
     }
 
-    public function getSingleStudent(): Student
-    {
-        return new Student(
-            'any_id',
-            'lastName',
-            'firstName',
-            new DateTimeImmutable()
-        );
-    }
-
     /**
      * @dataProvider markProvider
      */
     public function testReturnAverageOfMarks(float $expected, float ...$markValues)
     {
-        $student = $this->getSingleStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $this->hydrateStudentWithMarks($student, ...$markValues);
 
@@ -79,7 +72,7 @@ class AverageMarkServiceTest extends TestCase
         yield [7, 9, 5, 8, 6];
 
         // Single Mark
-        yield [ 5, 5 ];
+        yield [5, 5];
 
         // Rounded superior
         yield [7.67, 9, 9, 5];
@@ -95,7 +88,7 @@ class AverageMarkServiceTest extends TestCase
     {
         array_walk(
             $markValues,
-            function (float $markValue) use($student) {
+            function (float $markValue) use ($student) {
                 $student->getMarks()->add(
                     new Mark('mark', $markValue, 'Grammar', $student)
                 );

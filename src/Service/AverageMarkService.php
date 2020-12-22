@@ -40,6 +40,6 @@ class AverageMarkService
      */
     private function getAverage(array $values): float
     {
-        return round(array_sum($values)/count($values), 2);
+        return round(array_sum($values) / count($values), 2);
     }
 }
