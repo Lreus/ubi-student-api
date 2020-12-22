@@ -318,7 +318,7 @@
         }
       }
     },
-    "/student{studentId}/mark": {
+    "/student/{studentId}/mark": {
       "put": {
         "tags": [
           "Student",
@@ -480,7 +480,7 @@
         }
       }
     },
-    "/student{studentId}/marks/average": {
+    "/student/{studentId}/marks/average": {
       "get": {
         "tags": [
           "Student",
