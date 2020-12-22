@@ -56,5 +56,9 @@ First part release: Student basic management
 - Fix a lot of php-cs-fixer warnings
 
 1.4.0
-
+--
 - Implement documentation
+
+1.4.1
+--
+- Fix documentation date format 

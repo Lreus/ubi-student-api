@@ -581,7 +581,8 @@
           },
           "birth_date": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "example": "22/12/2012"
           }
         }
       },
