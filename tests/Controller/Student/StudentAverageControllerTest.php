@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Student;
 
-use App\Entity\Student;
 use App\Repository\StudentRepository;
 use App\Service\AverageMarkService;
 use App\Tests\ClientAwareTestCase;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,13 +45,9 @@ class StudentAverageControllerTest extends ClientAwareTestCase
     public function testCalculationIsDelegatedToMock()
     {
         $averageServiceMock = $this->injectMockIntoClient(AverageMarkService::class);
+
         $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);
-        $student = new Student(
-            'any_id',
-            'any_name',
-            'any_first_name',
-            new DateTimeImmutable()
-        );
+        $student = $this->objectModelFactory->buildAnyStudent();
         $studentRepositoryMock->method('require')->willReturn($student);
 
         $averageServiceMock->expects($this->once())->method('calculate')->with($student);
@@ -63,7 +57,7 @@ class StudentAverageControllerTest extends ClientAwareTestCase
 
     /**
      * Given I get any Student scholastic average
-     * And StudentRepository does not found the student
+     * And StudentRepository does not found the student.
      *
      * Then Controller returns a Json Response
      * And response status code is 404 (Not Found)
@@ -94,7 +88,7 @@ class StudentAverageControllerTest extends ClientAwareTestCase
             [],
             [],
             [
-                'HTTP_Accept' => 'application/json'
+                'HTTP_Accept' => 'application/json',
             ]
         );
 

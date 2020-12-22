@@ -25,10 +25,10 @@ class ValidMarkConstraintValidator extends ConstraintValidator
             $this->addViolation($value, $constraint, ValidMarkConstraint::NOT_FLOAT);
         }
 
-        if(is_numeric($value)) {
+        if (is_numeric($value)) {
             $floatValue = floatval($value);
 
-            if(0 > $floatValue || 20 < $floatValue ) {
+            if (0 > $floatValue || 20 < $floatValue) {
                 $this->addViolation($value, $constraint, ValidMarkConstraint::OUT_OF_RANGE);
             }
 

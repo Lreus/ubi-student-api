@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Mark;
 
-use App\Entity\Student;
 use App\Repository\StudentRepository;
 use App\Service\AverageMarkService;
 use App\Tests\ClientAwareTestCase;
-use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,12 +48,7 @@ class MarksAverageControllerTest extends ClientAwareTestCase
     {
         $averageMock = $this->injectMockIntoClient(AverageMarkService::class);
         $mock = $this->injectMockIntoClient(StudentRepository::class);
-        $students = [new Student(
-            'any_id',
-            'who_cares',
-            'it is mocked',
-            new DateTimeImmutable()
-        )];
+        $students = [$this->objectModelFactory->buildAnyStudent()];
 
         $mock->expects($this->once())->method('findAll')->willReturn($students);
         $averageMock->expects($this->once())->method('calculate')->with(...$students);
@@ -70,7 +63,7 @@ class MarksAverageControllerTest extends ClientAwareTestCase
             [],
             [],
             [
-                'HTTP_Accept' => 'application/json'
+                'HTTP_Accept' => 'application/json',
             ]
         );
 

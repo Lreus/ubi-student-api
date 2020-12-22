@@ -18,7 +18,7 @@ class ValidMarkConstraint extends Constraint
      */
     public function getMessage(string $reason): string
     {
-        switch ($reason){
+        switch ($reason) {
             case self::OUT_OF_RANGE:
                 return $this->outOfRange;
             case self::NOT_ROUNDED:

@@ -61,13 +61,13 @@ class StudentRepository extends ServiceEntityRepository
      * @throws ValidationException
      * @throws EntityNotFoundException
      */
-    public function updateFromRequest(array $content, string $userId): Student
+    public function updateFromRequest(array $content, string $studentId): Student
     {
         $this->validateContent($content);
 
-        $student = $this->find($userId);
+        $student = $this->find($studentId);
         if (!($student instanceof Student)) {
-            $message = sprintf('Unknown student identified by "%s"', $userId);
+            $message = sprintf('Unknown student identified by "%s"', $studentId);
             throw new EntityNotFoundException($message);
         }
 
@@ -111,7 +111,6 @@ class StudentRepository extends ServiceEntityRepository
         throw new EntityNotFoundException(sprintf('Unknown student identified by "%s"', $id));
     }
 
-
     /**
      * @throws ValidationException
      */
@@ -136,21 +135,21 @@ class StudentRepository extends ServiceEntityRepository
                         'type' => 'string',
                     ]),
                     new Assert\NotBlank([
-                        'normalizer' => 'trim'
-                    ])
+                        'normalizer' => 'trim',
+                    ]),
                 ],
                 'first_name' => [
                     new Assert\Type([
                         'type' => 'string',
                     ]),
                     new Assert\NotBlank([
-                        'normalizer' => 'trim'
-                    ])
+                        'normalizer' => 'trim',
+                    ]),
                 ],
                 'birth_date' => new Assert\DateTime([
-                    'format' => 'd/m/Y'
+                    'format' => 'd/m/Y',
                 ]),
-            ]
+            ],
         ]);
     }
 }

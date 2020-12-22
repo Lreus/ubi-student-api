@@ -11,11 +11,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class DeleteControllerTest extends ClientAwareTestCase
 {
     /**
-     * Given I delete any Student update
+     * Given I delete any Student update.
      *
      * Then the student is removed from database
      * And Controller returns a Json Response
@@ -70,7 +69,7 @@ class DeleteControllerTest extends ClientAwareTestCase
             [],
             [],
             [
-                'HTTP_Accept' => 'application/json'
+                'HTTP_Accept' => 'application/json',
             ]
         );
 

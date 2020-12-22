@@ -9,7 +9,6 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\ORMException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,7 +19,7 @@ class UpdateControllerTest extends ClientAwareTestCase
 {
     /**
      * Given I post any Student update
-     * And StudentRepository does not validate request content
+     * And StudentRepository does not validate request content.
      *
      * Then Controller returns a Json Response
      * And response status code is 400 (Bad Request)
@@ -45,7 +44,7 @@ class UpdateControllerTest extends ClientAwareTestCase
 
     /**
      * Given I post any Student update
-     * And StudentRepository does not found the student
+     * And StudentRepository does not found the student.
      *
      * Then Controller returns a Json Response
      * And response status code is 404 (Not Found)
@@ -70,7 +69,7 @@ class UpdateControllerTest extends ClientAwareTestCase
 
     /**
      * Given I post any Student update
-     * And StudentRepository returns an updated Student
+     * And StudentRepository returns an updated Student.
      *
      * Then the student is saved in database
      * And Controller returns a Json Response
@@ -128,7 +127,7 @@ class UpdateControllerTest extends ClientAwareTestCase
             [],
             [],
             [
-                'HTTP_Accept' => 'application/json'
+                'HTTP_Accept' => 'application/json',
             ],
             json_encode($postParameters)
         );
@@ -141,12 +140,7 @@ class UpdateControllerTest extends ClientAwareTestCase
      */
     private function expectsThisMockWillReturnStudent(MockObject $mockObject): Student
     {
-        $expectedStudent = new Student(
-            'any_id',
-            'who cares ?',
-            'it is mocked',
-            new DateTimeImmutable()
-        );
+        $expectedStudent = $this->objectModelFactory->buildAnyStudent();
 
         $mockObject->expects($this->once())->method('updateFromRequest')->willReturn($expectedStudent);
 

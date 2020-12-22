@@ -48,3 +48,9 @@ First part release: Student basic management
 - Fix some missing return types
 - Fix some useless imports
 - Ensure entities format their string contents
+
+1.3.1
+--
+- Add phpstan to dev dependencies
+- Add php-cs-fixer to dev dependencies
+- Fix a lot of php-cs-fixer warnings

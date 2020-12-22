@@ -7,23 +7,20 @@ namespace App\Tests\Repository\Student;
 use App\Entity\Mark;
 use App\Entity\Student;
 use App\Repository\MarkRepository;
-use App\Repository\StudentRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
 
+/**
+ * @coversDefaultClass \App\Repository\StudentRepository
+ */
 class StudentRepositoryTest extends AbstractStudentRepositoryTest
 {
     /**
-     * @covers StudentRepository::save()
+     * @covers ::save
      */
     public function testSavingEntity()
     {
-        $student = new Student(
-        'any_id',
-        'REUS',
-        'Ludovic',
-        DateTimeImmutable::createFromFormat('d/m/Y', '07/01/1982')
-        );
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $this->clearStudentFromDatabase($student->getId());
 
@@ -35,7 +32,7 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
 
     public function testCascadeRemove()
     {
-        $student = $this->getAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
         $this->clearStudentFromDatabase($student->getId());
 
         foreach (['good_mark', 'bad_mark'] as $markId) {
@@ -62,7 +59,7 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
         ];
 
         $markRepository = self::$container->get(MarkRepository::class);
-        /** @var MarkRepository $markRepository */
+        /* @var MarkRepository $markRepository */
         $this->assertInstanceOf(MarkRepository::class, $markRepository);
         $markRepository->save(...$marks);
         $this->entityManager->clear();
@@ -76,11 +73,11 @@ class StudentRepositoryTest extends AbstractStudentRepositoryTest
     }
 
     /**
-     * @covers StudentRepository::remove()
+     * @covers ::remove
      */
     public function testRemoveStudentRemovesEntities()
     {
-        $student = $this->getAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $this->clearStudentFromDatabase($student->getId());
 

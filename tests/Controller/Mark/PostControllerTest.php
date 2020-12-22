@@ -11,7 +11,6 @@ use App\Exception\ValidationException;
 use App\Repository\MarkRepository;
 use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\ORMException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -24,7 +23,7 @@ class PostControllerTest extends ClientAwareTestCase
     public function testCreatedResponseIsGeneratedOnSuccess()
     {
         $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->buildAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $expectedMark = $this->expectsMockWillReturnMarkForStudent($markRepositoryMock, $student);
@@ -45,7 +44,7 @@ class PostControllerTest extends ClientAwareTestCase
     public function testOrmExceptionReturnsSanitizedMessage(ORMException $exception)
     {
         $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->buildAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $markRepositoryMock->method('createFromRequest')->willReturn(
@@ -72,7 +71,7 @@ class PostControllerTest extends ClientAwareTestCase
     public function testCreatedMarkIsPersisted()
     {
         $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->buildAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $mark = $this->expectsMockWillReturnMarkForStudent($markRepositoryMock, $student);
@@ -84,20 +83,10 @@ class PostControllerTest extends ClientAwareTestCase
 
     public function expectsThisMockWillReturnStudent(MockObject $mock): Student
     {
-        $student = $this->buildAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
         $mock->method('require')->willReturn($student);
 
         return $student;
-    }
-
-    public function buildAnyStudent(): Student
-    {
-        return new Student(
-            'any_id',
-            'who_cares',
-            'it is mocked',
-            new DateTimeImmutable()
-        );
     }
 
     public function testCreatedMarkGenerateBadRequestOnValidationException()
@@ -158,7 +147,7 @@ class PostControllerTest extends ClientAwareTestCase
         return $mark;
     }
 
-    public function postMark(array $postParameters = [], string $studentId = 'who_cares' ): KernelBrowser
+    public function postMark(array $postParameters = [], string $studentId = 'who_cares'): KernelBrowser
     {
         $this->client->request(
             Request::METHOD_POST,
@@ -166,7 +155,7 @@ class PostControllerTest extends ClientAwareTestCase
             [],
             [],
             [
-                'HTTP_Accept' => 'application/json'
+                'HTTP_Accept' => 'application/json',
             ],
             json_encode($postParameters)
         );
