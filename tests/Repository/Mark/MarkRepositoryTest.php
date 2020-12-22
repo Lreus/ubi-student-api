@@ -9,6 +9,7 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\MarkRepository;
 use App\Repository\StudentRepository;
+use App\Tests\Utils\ObjectModelFactory;
 use DateTimeImmutable;
 use Doctrine\Persistence\ObjectManager;
 use Iterator;
@@ -20,11 +21,14 @@ class MarkRepositoryTest extends KernelTestCase
 {
     private MarkRepository $subject;
 
+    protected ObjectModelFactory $objectModelFactory;
+
     protected function setUp(): void
     {
         self::bootKernel();
 
         $this->subject = $this->getMarkRepository();
+        $this->objectModelFactory = new ObjectModelFactory();
     }
 
     public function getMarkRepository(): MarkRepository
@@ -43,12 +47,7 @@ class MarkRepositoryTest extends KernelTestCase
             'subject' => 'Grammar'
         ];
 
-        $providedStudent = new Student(
-            'any_id',
-            'any_name',
-            'any_first_name',
-            new DateTimeImmutable()
-        );
+        $providedStudent = $this->objectModelFactory->buildAnyStudent();
 
         $result = $this->subject->createFromRequest($requestContent, $providedStudent);
 
@@ -66,12 +65,7 @@ class MarkRepositoryTest extends KernelTestCase
      */
     public function testThrowsValidationExceptionOnInvalidData(array $requestContent)
     {
-        $providedStudent = new Student(
-            'any_id',
-            'any_name',
-            'any_first_name',
-            new DateTimeImmutable()
-        );
+        $providedStudent = $this->objectModelFactory->buildAnyStudent();
 
         $this->expectException(ValidationException::class);
 
@@ -153,16 +147,12 @@ class MarkRepositoryTest extends KernelTestCase
     public function testSavingEntity()
     {
         $studentRepository = self::$container->get(StudentRepository::class);
-        $this->assertInstanceOf(StudentRepository::class, $studentRepository);
         /** @var StudentRepository $studentRepository */
-        $studentRepository->remove('any_id');
+        $this->assertInstanceOf(StudentRepository::class, $studentRepository);
 
-        $student = new Student(
-            'any_id',
-            'REUS',
-            'Ludovic',
-            DateTimeImmutable::createFromFormat('d/m/Y', '07/01/1982')
-        );
+        $student = $this->objectModelFactory->buildAnyStudent();
+
+        $studentRepository->remove($student->getId());
 
         $mark = new Mark(
             'another_id',
