@@ -106,12 +106,7 @@ class PostControllerTest extends ClientAwareTestCase
      */
     private function expectsThisMockWillReturnStudent(MockObject $mockObject): Student
     {
-        $expectedStudent = new Student(
-            'anyId',
-            'Doe',
-            'John',
-            new DateTimeImmutable()
-        );
+        $expectedStudent = $this->objectModelFactory->buildAnyStudent();
 
         $mockObject->method('createFromRequest')->willReturn($expectedStudent);
 

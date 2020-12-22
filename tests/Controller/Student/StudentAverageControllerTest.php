@@ -47,13 +47,9 @@ class StudentAverageControllerTest extends ClientAwareTestCase
     public function testCalculationIsDelegatedToMock()
     {
         $averageServiceMock = $this->injectMockIntoClient(AverageMarkService::class);
+
         $studentRepositoryMock = $this->injectMockIntoClient(StudentRepository::class);
-        $student = new Student(
-            'any_id',
-            'any_name',
-            'any_first_name',
-            new DateTimeImmutable()
-        );
+        $student = $this->objectModelFactory->buildAnyStudent();
         $studentRepositoryMock->method('require')->willReturn($student);
 
         $averageServiceMock->expects($this->once())->method('calculate')->with($student);
