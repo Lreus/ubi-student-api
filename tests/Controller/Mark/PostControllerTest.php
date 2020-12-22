@@ -11,7 +11,6 @@ use App\Exception\ValidationException;
 use App\Repository\MarkRepository;
 use App\Repository\StudentRepository;
 use App\Tests\ClientAwareTestCase;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\ORMException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -148,7 +147,7 @@ class PostControllerTest extends ClientAwareTestCase
         return $mark;
     }
 
-    public function postMark(array $postParameters = [], string $studentId = 'who_cares' ): KernelBrowser
+    public function postMark(array $postParameters = [], string $studentId = 'who_cares'): KernelBrowser
     {
         $this->client->request(
             Request::METHOD_POST,
@@ -156,7 +155,7 @@ class PostControllerTest extends ClientAwareTestCase
             [],
             [],
             [
-                'HTTP_Accept' => 'application/json'
+                'HTTP_Accept' => 'application/json',
             ],
             json_encode($postParameters)
         );

@@ -72,7 +72,7 @@ class AverageMarkServiceTest extends TestCase
         yield [7, 9, 5, 8, 6];
 
         // Single Mark
-        yield [ 5, 5 ];
+        yield [5, 5];
 
         // Rounded superior
         yield [7.67, 9, 9, 5];
@@ -88,7 +88,7 @@ class AverageMarkServiceTest extends TestCase
     {
         array_walk(
             $markValues,
-            function (float $markValue) use($student) {
+            function (float $markValue) use ($student) {
                 $student->getMarks()->add(
                     new Mark('mark', $markValue, 'Grammar', $student)
                 );

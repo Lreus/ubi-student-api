@@ -63,7 +63,7 @@ class MarksAverageControllerTest extends ClientAwareTestCase
             [],
             [],
             [
-                'HTTP_Accept' => 'application/json'
+                'HTTP_Accept' => 'application/json',
             ]
         );
 

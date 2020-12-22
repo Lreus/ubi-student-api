@@ -7,10 +7,9 @@ namespace App\Tests\Repository\Student;
 use App\Entity\Student;
 use App\Exception\ValidationException;
 use Doctrine\ORM\EntityNotFoundException;
-use App\Repository\StudentRepository;
 
 /**
- * @covers StudentRepository::updateFromRequest
+ * @covers \StudentRepository::updateFromRequest
  */
 class UpdateStudentTest extends AbstractStudentRepositoryTest
 {

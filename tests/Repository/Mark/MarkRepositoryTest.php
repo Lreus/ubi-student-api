@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Repository\Mark;
 
 use App\Entity\Mark;
-use App\Entity\Student;
 use App\Exception\ValidationException;
 use App\Repository\MarkRepository;
 use App\Repository\StudentRepository;
 use App\Tests\Utils\ObjectModelFactory;
-use DateTimeImmutable;
 use Doctrine\Persistence\ObjectManager;
 use Iterator;
 use Ramsey\Uuid\Nonstandard\Uuid;
@@ -36,7 +34,7 @@ class MarkRepositoryTest extends KernelTestCase
         $subject = self::$container->get(MarkRepository::class);
         $this->assertInstanceOf(MarkRepository::class, $subject);
 
-        /** @var MarkRepository $subject */
+        /* @var MarkRepository $subject */
         return $subject;
     }
 
@@ -44,7 +42,7 @@ class MarkRepositoryTest extends KernelTestCase
     {
         $requestContent = [
             'value' => 15.5,
-            'subject' => 'Grammar'
+            'subject' => 'Grammar',
         ];
 
         $providedStudent = $this->objectModelFactory->buildAnyStudent();
@@ -78,76 +76,76 @@ class MarkRepositoryTest extends KernelTestCase
         yield [
             [
                 'value' => 19.99,
-            ]
+            ],
         ];
 
         // Missing value
         yield [
             [
                 'subject' => 'Grammar',
-            ]
+            ],
         ];
 
         // Not a numeric value
         yield [
             [
                 'value' => 'quinze',
-                'subject' => 'Grammar'
-            ]
+                'subject' => 'Grammar',
+            ],
         ];
 
         // Negative value
         yield [
             [
                 'value' => -0.1,
-                'subject' => 'Grammar'
-            ]
+                'subject' => 'Grammar',
+            ],
         ];
 
         // too high value
         yield [
             [
                 'value' => 20.1,
-                'subject' => 'Grammar'
-            ]
+                'subject' => 'Grammar',
+            ],
         ];
 
         // to much decimals
         yield [
             [
                 'value' => 19.999,
-                'subject' => 'Grammar'
-            ]
+                'subject' => 'Grammar',
+            ],
         ];
 
         yield [
             [
                 'value' => 19.994,
-                'subject' => 'Grammar'
-            ]
+                'subject' => 'Grammar',
+            ],
         ];
 
         // Subject not a string
         yield [
             [
                 'value' => 19.99,
-                'subject' => 15
-            ]
+                'subject' => 15,
+            ],
         ];
 
         // Empty subject
         yield [
             [
                 'value' => 19.99,
-                'subject' => '   '
-            ]
+                'subject' => '   ',
+            ],
         ];
     }
 
     public function testSavingEntity()
     {
         $studentRepository = self::$container->get(StudentRepository::class);
-        /** @var StudentRepository $studentRepository */
+        /* @var StudentRepository $studentRepository */
         $this->assertInstanceOf(StudentRepository::class, $studentRepository);
 
         $student = $this->objectModelFactory->buildAnyStudent();
