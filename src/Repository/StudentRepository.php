@@ -111,7 +111,6 @@ class StudentRepository extends ServiceEntityRepository
         throw new EntityNotFoundException(sprintf('Unknown student identified by "%s"', $id));
     }
 
-
     /**
      * @throws ValidationException
      */
@@ -136,21 +135,21 @@ class StudentRepository extends ServiceEntityRepository
                         'type' => 'string',
                     ]),
                     new Assert\NotBlank([
-                        'normalizer' => 'trim'
-                    ])
+                        'normalizer' => 'trim',
+                    ]),
                 ],
                 'first_name' => [
                     new Assert\Type([
                         'type' => 'string',
                     ]),
                     new Assert\NotBlank([
-                        'normalizer' => 'trim'
-                    ])
+                        'normalizer' => 'trim',
+                    ]),
                 ],
                 'birth_date' => new Assert\DateTime([
-                    'format' => 'd/m/Y'
+                    'format' => 'd/m/Y',
                 ]),
-            ]
+            ],
         ]);
     }
 }

@@ -11,11 +11,11 @@ use App\Exception\ValidationException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Ramsey\Uuid\Uuid;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MarkRepository extends ServiceEntityRepository
 {
@@ -25,7 +25,7 @@ class MarkRepository extends ServiceEntityRepository
     {
         $this->validator = $validator;
 
-        parent::__construct($registry,Mark::class);
+        parent::__construct($registry, Mark::class);
     }
 
     /**
@@ -74,7 +74,7 @@ class MarkRepository extends ServiceEntityRepository
                         'type' => 'string',
                     ]),
                     new Assert\NotBlank([
-                            'normalizer' => 'trim'
+                            'normalizer' => 'trim',
                         ]
                     ),
                 ],
