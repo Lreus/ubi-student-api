@@ -6,6 +6,7 @@ namespace App\Tests\Repository\Student;
 
 use App\Entity\Student;
 use App\Repository\StudentRepository;
+use App\Tests\Utils\ObjectModelFactory;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Persistence\ObjectManager;
 use Iterator;
@@ -17,12 +18,15 @@ abstract class AbstractStudentRepositoryTest extends KernelTestCase
 
     protected ObjectManager $entityManager;
 
+    protected ObjectModelFactory $objectModelFactory;
+
     protected function setUp(): void
     {
         self::bootKernel();
         $this->subject = $this->getStudentRepository();
 
         $this->entityManager = $this->getEntityManager();
+        $this->objectModelFactory = new ObjectModelFactory();
     }
 
     private function getEntityManager(): ObjectManager
