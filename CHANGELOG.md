@@ -54,3 +54,7 @@ First part release: Student basic management
 - Add phpstan to dev dependencies
 - Add php-cs-fixer to dev dependencies
 - Fix a lot of php-cs-fixer warnings
+
+1.4.0
+
+- Implement documentation
