@@ -1,0 +1,751 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Ubi student api",
+    "description": "Simple Json Api to manage Students",
+    "contact": {
+      "email": "ludovic.reus@abbeal.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0-oas3"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Student",
+      "description": "Class student"
+    },
+    {
+      "name": "Mark",
+      "description": "Student's mark"
+    }
+  ],
+  "paths": {
+    "/student": {
+      "put": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "adds a Student",
+        "description": "Adds a student to the class",
+        "operationId": "addStudentPut",
+        "requestBody": {
+          "description": "Student to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Student"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ressource is created, id is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "student is malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "adds a Student",
+        "description": "Adds a student to the class",
+        "operationId": "addStudentPost",
+        "requestBody": {
+          "description": "Student to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Student"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ressource is created, id is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "student is malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/student/{studentId}": {
+      "put": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "update a student",
+        "description": "update a student of the class",
+        "operationId": "updateStudentPut",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "the student id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "examples": {
+              "uuid": {
+                "value": "894a62e5-fb22-4a76-b8b7-965c102ea369"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Student to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Student"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Resource was succesfully updated"
+          },
+          "400": {
+            "description": "student is malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "update a student",
+        "description": "update a student of the class",
+        "operationId": "updateStudentPost",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "the student id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "examples": {
+              "uuid": {
+                "value": "894a62e5-fb22-4a76-b8b7-965c102ea369"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Student to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Student"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Resource was succesfully updated"
+          },
+          "400": {
+            "description": "student is malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Student"
+        ],
+        "summary": "delete a student",
+        "description": "remove a student from the class",
+        "operationId": "deleteStudent",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "the student id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "examples": {
+              "uuid": {
+                "value": "894a62e5-fb22-4a76-b8b7-965c102ea369"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Resource was succesfully removed"
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/student{studentId}/mark": {
+      "put": {
+        "tags": [
+          "Student",
+          "Mark"
+        ],
+        "summary": "adds a Mark to a Student",
+        "description": "Adds a mark to an existing student",
+        "operationId": "addMarkPut",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "the student id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "examples": {
+              "uuid": {
+                "value": "894a62e5-fb22-4a76-b8b7-965c102ea369"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Mark to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Mark"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ressource is created, id is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mark is malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_400_1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Student",
+          "Mark"
+        ],
+        "summary": "adds a Mark to a Student",
+        "description": "Adds a mark to an existing student",
+        "operationId": "addMarkPost",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "the student id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "examples": {
+              "uuid": {
+                "value": "894a62e5-fb22-4a76-b8b7-965c102ea369"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Mark to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Mark"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ressource is created, id is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mark is malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_400_1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/student{studentId}/marks/average": {
+      "get": {
+        "tags": [
+          "Student",
+          "Average"
+        ],
+        "summary": "get student's average",
+        "description": "Get the student's average",
+        "operationId": "studentAverageGet",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "the student id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "examples": {
+              "uuid": {
+                "value": "894a62e5-fb22-4a76-b8b7-965c102ea369"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ressource is created, id is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No marks stored to get average"
+          },
+          "404": {
+            "description": "Resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/marks/average": {
+      "get": {
+        "tags": [
+          "Average"
+        ],
+        "summary": "get class average",
+        "description": "Get the average of all recorded marks",
+        "operationId": "classAverageGet",
+        "responses": {
+          "200": {
+            "description": "Ressource is created, id is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No marks stored to get average"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Student": {
+        "required": [
+          "birth_date",
+          "first_name",
+          "last_name"
+        ],
+        "type": "object",
+        "properties": {
+          "last_name": {
+            "type": "string",
+            "example": "BOUCHER"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Léon"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "Mark": {
+        "required": [
+          "subject",
+          "value"
+        ],
+        "properties": {
+          "value": {
+            "type": "number",
+            "example": 15.5
+          },
+          "subject": {
+            "type": "string",
+            "example": "grammar"
+          }
+        }
+      },
+      "inline_response_201": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "894a62e5-fb22-4a76-b8b7-965c102ea365"
+          }
+        }
+      },
+      "inline_response_400": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Required fields: \"last_name\" :string, \"first_name\": string, \"birth_date\": date(DD-MM-YYYY)"
+          }
+        }
+      },
+      "inline_response_500": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Internal Server Error"
+          }
+        }
+      },
+      "inline_response_404": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Not Found"
+          }
+        }
+      },
+      "inline_response_400_1": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Required fields: \"value\" :numeric, \"subject\": string"
+          }
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "average": {
+            "type": "number",
+            "example": 15.75
+          }
+        }
+      }
+    },
+    "responses": {
+      "200Average": {
+        "description": "Ressource is created, id is returned",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/inline_response_200"
+            }
+          }
+        }
+      },
+      "201Created": {
+        "description": "Ressource is created, id is returned",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/inline_response_201"
+            }
+          }
+        }
+      },
+      "BadStudentRequest": {
+        "description": "student is malformed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/inline_response_400"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "unexpected error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/inline_response_500"
+            }
+          }
+        }
+      },
+      "UpdateSuccesfull": {
+        "description": "Resource was succesfully updated"
+      },
+      "DeleteSuccesfull": {
+        "description": "Resource was succesfully removed"
+      },
+      "NoMarks": {
+        "description": "No marks stored to get average"
+      },
+      "NotFound": {
+        "description": "Resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/inline_response_404"
+            }
+          }
+        }
+      },
+      "BadMarkRequest": {
+        "description": "Mark is malformed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/inline_response_400_1"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "StudentId": {
+        "name": "studentId",
+        "in": "path",
+        "description": "the student id",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "examples": {
+          "uuid": {
+            "value": "894a62e5-fb22-4a76-b8b7-965c102ea369"
+          }
+        }
+      }
+    }
+  }
+}
