@@ -24,7 +24,7 @@ class PostControllerTest extends ClientAwareTestCase
     public function testCreatedResponseIsGeneratedOnSuccess()
     {
         $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->buildAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $expectedMark = $this->expectsMockWillReturnMarkForStudent($markRepositoryMock, $student);
@@ -45,7 +45,7 @@ class PostControllerTest extends ClientAwareTestCase
     public function testOrmExceptionReturnsSanitizedMessage(ORMException $exception)
     {
         $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->buildAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $markRepositoryMock->method('createFromRequest')->willReturn(
@@ -72,7 +72,7 @@ class PostControllerTest extends ClientAwareTestCase
     public function testCreatedMarkIsPersisted()
     {
         $this->injectMockIntoClient(StudentRepository::class);
-        $student = $this->buildAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
 
         $markRepositoryMock = $this->injectMockIntoClient(MarkRepository::class);
         $mark = $this->expectsMockWillReturnMarkForStudent($markRepositoryMock, $student);
@@ -84,20 +84,10 @@ class PostControllerTest extends ClientAwareTestCase
 
     public function expectsThisMockWillReturnStudent(MockObject $mock): Student
     {
-        $student = $this->buildAnyStudent();
+        $student = $this->objectModelFactory->buildAnyStudent();
         $mock->method('require')->willReturn($student);
 
         return $student;
-    }
-
-    public function buildAnyStudent(): Student
-    {
-        return new Student(
-            'any_id',
-            'who_cares',
-            'it is mocked',
-            new DateTimeImmutable()
-        );
     }
 
     public function testCreatedMarkGenerateBadRequestOnValidationException()
