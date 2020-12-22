@@ -6,7 +6,6 @@ namespace App\Tests\Repository\Student;
 
 use App\Entity\Student;
 use App\Exception\ValidationException;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityNotFoundException;
 use App\Repository\StudentRepository;
 
@@ -43,21 +42,11 @@ class UpdateStudentTest extends AbstractStudentRepositoryTest
 
     public function testUpdateFromRequest()
     {
-        $userId = 'the_existing_user';
-        $userLastName = 'Doe';
-        $userFirstName = 'John';
-        $userBirthDate = DateTimeImmutable::createFromFormat('d/m/Y', '02/12/1982');
+        $existingStudent = $this->objectModelFactory->buildAnyStudent();
 
-        $this->clearStudentFromDatabase($userId);
+        $this->clearStudentFromDatabase($existingStudent->getId());
 
-        $this->entityManager->persist(
-            new Student(
-                $userId,
-                $userLastName,
-                $userFirstName,
-                $userBirthDate
-            )
-        );
+        $this->entityManager->persist($existingStudent);
 
         $this->entityManager->flush();
 
@@ -67,7 +56,7 @@ class UpdateStudentTest extends AbstractStudentRepositoryTest
             'birth_date' => '06/02/1983',
         ];
 
-        $result = $this->subject->updateFromRequest($updatedContent, $userId);
+        $result = $this->subject->updateFromRequest($updatedContent, $existingStudent->getId());
 
         $this->assertInstanceOf(Student::class, $result);
         $this->assertSame($result->getLastName(), strtoupper($updatedContent['last_name']));
