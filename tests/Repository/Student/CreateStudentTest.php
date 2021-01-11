@@ -8,7 +8,7 @@ use App\Entity\Student;
 use App\Exception\ValidationException;
 
 /**
- * @covers \StudentRepository::createFromRequest
+ * @covers \App\Repository\StudentRepository::createFromRequest
  */
 class CreateStudentTest extends AbstractStudentRepositoryTest
 {

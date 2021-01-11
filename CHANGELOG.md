@@ -66,3 +66,7 @@ First part release: Student basic management
 1.4.2
 --
 - Fix route documentation
+
+1.4.3
+--
+- Fix annotation covers for several tests
